@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+class data(models.Model):
+    user=models.CharField(max_length=30)
+    inputfile_path=models.CharField(max_length=50)
+    processedfile_path=models.CharField(max_length=50,blank=True)
+    prediction=models.CharField(max_length=30,blank=True)
