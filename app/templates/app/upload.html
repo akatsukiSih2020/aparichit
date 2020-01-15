@@ -1,11 +1,12 @@
 {% extends 'app/base.html' %}
 
+
 {% block breadcrumb %}
   <li class="breadcrumb-item active">View/Upload Data</li>
 {% endblock %}
 
 {% block content %}
-
+  {% include 'app/side_nav.html' %}
   <a href="{% url 'new_file' %}" class="btn btn-primary">Add data</a><br></br>
 
   <table class="table">
