@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.models import User
 # Create your views here.
-def hom(request):
+def home(request):
     return render(request,'app/home.html')
 def log(request):
     if request.method == 'POST':
@@ -65,4 +65,3 @@ def new_lpd(request):
     
 def new_file(request):
     return render(request,'app/new_file.html') 
-
