@@ -1,0 +1,31 @@
+{% extends 'app/base.html' %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">Launchpad Configuration</li>
+{% endblock %}
+
+{% block content %}
+
+  <a href="{% url 'new_lpd' %}" class="btn btn-primary">Add launchpad</a><br></br>
+
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Altitude</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pad_info in launch_pads %}
+        <tr>
+          <td class="align-middle">{{ pad_info.lat }}</td>
+          <td class="align-middle">{{ pad_info.longi }}</td>
+          <td class="align-middle">{{ pad_info.alt }} </td>
+          <td><button type="button" class="close">X</button></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
