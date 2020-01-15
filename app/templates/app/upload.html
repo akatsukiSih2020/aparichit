@@ -1,0 +1,27 @@
+{% extends 'app/base.html' %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">View/Upload Data</li>
+{% endblock %}
+
+{% block content %}
+
+  <a href="{% url 'new_file' %}" class="btn btn-primary">Add data</a><br></br>
+
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Name</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for file in file_added.all %}
+           <tr>
+            <td>{{file.name}}</td>
+            <td>{{file.time_added}}</td>
+           </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
