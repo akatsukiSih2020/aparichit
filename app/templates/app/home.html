@@ -1,8 +1,58 @@
-{% extends 'app/base1.html' %}
-this is home
-<br>
-<a href="{% url 'verify:login' %}" >Log In</a>
-<br>
-<a href="{% url 'verify:logout' %}" >Log out</a>
-<br>
-<a href="{% url 'verify:signup' %}" >Log signup</a>
+{% include 'app/base1.html' %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  height: 5000px;
+  background: #f1f1f1;
+}
+
+#mySVG {
+  position: fixed;
+  top: 15%;
+  width: 100%;
+  height: 100%;
+  margin-left:-50px;
+}
+</style>
+</head>
+<body>
+
+<svg id="mySVG">
+  <!--path fill="none" stroke="red" stroke-width="3" id="triangle" stroke-linecap="round" d="M 845,0 c 94.488,-0.933 147.798,113.116 61,198.96 c -112.197,110.964 -250.383,70.569 -402,133 c -110.712,45.587 -171.223,130.125 -158.981,201.27" style="stroke-dasharray: 977.678px; stroke-dashoffset: 0px; visibility: visible;"-->
+    <path id="triangle" fill="none" stroke="#0000ff" stroke-width="10" stroke-linecap="round" stroke-miterlimit="0" d="M845,14.04
+		c94.488-0.933,147.798,113.116,61,198.96c-112.197,110.964-250.383,70.569-402,133c-110.712,45.587-171.223,130.125-158.981,201.27" style="stroke-dasharray: 977.678px; stroke-dashoffset: 0px; visibility: visible;"></path>
+    <!--path id="p2" fill="none" stroke="#FF0000" stroke-width="10" stroke-linecap="round" stroke-miterlimit="10" d="M395.214,636.783
+		C508.019,750.449,735.719,626.242,785,780c18.75,58.5,0.346,121.5-10.028,149.343" style="stroke-dasharray: 591.916px; stroke-dashoffset: 0px; visibility: visible;"></path-->
+</svg>
+
+<script>
+// Get the id of the <path> element and the length of <path>
+var triangle = document.getElementById("triangle");
+var length = triangle.getTotalLength();
+
+// The start position of the drawing
+triangle.style.strokeDasharray = length;
+
+// Hide the triangle by offsetting dash. Remove this line to show the triangle before scroll draw
+triangle.style.strokeDashoffset = length;
+
+// Find scroll percentage on scroll (using cross-browser properties), and offset dash same amount as percentage scrolled
+window.addEventListener("scroll", myFunction);
+
+function myFunction() {
+var scrollpercent = (document.body.scrollTop + document.documentElement.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight);
+
+  var draw = length * scrollpercent;
+  
+  // Reverse the drawing (when scrolling upwards)
+  triangle.style.strokeDashoffset = length - draw;
+}
+</script>
+
+</body>
+</html>
+
+<!--path id="p1" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-miterlimit="0" d="M845,14.04
+		c94.488-0.933,147.798,113.116,61,198.96c-112.197,110.964-250.383,70.569-402,133c-110.712,45.587-171.223,130.125-158.981,201.27" style="stroke-dasharray: 977.678px; stroke-dashoffset: 0px; visibility: visible;"></path-->
