@@ -7,6 +7,26 @@ def hom(request):
     return render(request,'app/home.html')
 def log(request):
     if request.method == 'POST':
+
+        username = request.POST['username']
+        password = request.POST['password']
+        # print(username,password)
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+        else:
+            pass
+        return render(request,'app/home.html')
+            # return JsonResponse({'success': 'true'})
+def logo(request):
+    logout(request)
+    return render(request,'app/home.html')
+
+def signup(request):
+    if request.method == 'POST':
+        # print( request.POST['username'])
+        us=User.objects.create_user( request.POST['username'],  request.POST['email'],  request.POST['password'])
+        us.save()  
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
@@ -14,18 +34,6 @@ def log(request):
             login(request, user)
         else:
             pass
-        # return render(request,'app/home.html')
-            return JsonResponse({'success': 'true'})
-def logo(request):
-    if request.method == 'POST':
-        logout(request)
-        return render(request,'app/home.html')
-
-def signup(request):
-    if request.method == 'POST':
-        print( request.POST['username'])
-        us=User.objects.create_user( request.POST['username'],  request.POST['email'],  request.POST['password'])
-        us.save()  
         return render(request,'app/home.html')
 
 def launch(request):
