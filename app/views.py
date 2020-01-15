@@ -4,9 +4,12 @@ from django.http import HttpResponse,JsonResponse
 def home(request):
     return render(request,'app/home.html')
 def login(request):
-    return render(request,'app/home.html')
+    if request.method == 'POST':
+        return render(request,'app/home.html')
+
 def signup(request):
-    return render(request,'app/home.html')
+    if request.method == 'POST':
+        return render(request,'app/home.html')
 
 def launchpad(request):
     if request.method == 'GET':
