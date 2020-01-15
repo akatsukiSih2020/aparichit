@@ -1,179 +1,9 @@
+<!DOCTYPE html>
+{% load static %}
 <!--navbar-horizontal... -->
 <html>
 <head>
-    <style>
-        /*navigation bar*/
-        .hor_nav
-        {
-            background-color:#000000;
-            
-        }
-        .hor_nav .log
-        {
-            text-align: right;
-            padding: 40px 10px;
-            color: white;
-        }
-        .hor_nav a
-        {
-            padding-right: 10px;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .hor_nav button
-        {
-            margin-left: 30px;
-            color: white;
-            font-size: 20px;
-            background-color: transparent;
-            border: none;
-            outline: none;
-            font-weight: bold;
-        }
-        
-        /*modal*/
-        .modal
-        {
-            vertical-align: middle;
-            text-align: center;
-            margin: auto 0;
-        }
-        
-        .modal
-        {
-            margin: auto;
-            position: fixed;
-            z-index: 5;
-            left: 0;
-            top: 0;
-            padding: 10px;
-            overflow: auto;
-        }
-        .modal .modal-content
-        {
-            background-color: #FFF;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            color: #111111;
-            border-radius: 10px;
-            border: 2px solid #444444;
-            overflow: hidden;
-            padding: 0px 30px;
-        }
-        
-        .modal .close
-        {
-            color: #999;
-            float: right;
-            font-size: 60px;
-            padding: 10px;
-            font-weight: lighter;
-        }
-
-        .modal .close:hover
-        .modal .close:focus
-        {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        
-        .modal .modal-content .modal-title
-        {
-            margin-top: 20px;
-            margin-bottom: 30px;
-            font-size: 30px;
-        }
-        
-        .modal-content .subheading
-        {
-            font-size: 20px;
-            margin-top: 20px;
-            padding-bottom: 0;
-        }
-
-        .modal-content .subheading .link
-        {
-            color: deepskyblue;
-            text-decoration: none;
-            background-color: transparent;
-            border: none;
-            outline: none;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .hor_nav .modal-body input
-        {
-            display: block;
-            width: 100%;
-            border: none;
-            outline: none;
-            border-bottom: 1px solid #AAA;
-            color: #555;
-            font-size: 1.9rem;
-            padding-left: 5px;
-        }
-        
-        .hor_nav .modal-body input:focus
-        {
-            border-bottom: 1px solid deepskyblue;
-        }
-
-        .hor_nav .modal-body .field span
-        {
-            color: #888;
-            font-size: 18px;
-            font-weight: normal;
-        }
-
-        .hor_nav .modal-body .field
-        {
-            margin-top: 55px;
-            position: relative;
-        }
-
-        .hor_nav .modal-body .label
-        {
-            position: absolute;
-            pointer-events: none;
-            left: 0;
-            top: 0;
-            transition: 0.3s ease all;
-        }
-
-
-        .hor_nav .modal-body input:focus ~ .label,
-        .hor_nav .modal-body .field input:valid ~ .label
-        {
-            top: -17px;
-            font-size: 1.2rem;
-            opacity: 1;
-        }
-
-        .hor_nav .modal-body .field .btn
-        {
-            color: white;
-            background-color: black;
-            border: none;
-            outline: none;
-            width: 100%;
-            padding: 15px;
-            font-size: 15px;
-            margin-top: 10%;
-            margin-left: 0;
-            border-radius: 10px;
-        }
-
-        .hor_nav .modal-body .field button:hover,
-        .hor_nav .modal-body .field button:focus
-        {
-            opacity: 0.8;
-        }
-        
-    </style>
+<link href="{% static '/app/css/hor-nav.css' %}" rel="stylesheet" type="text/css" >
      <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
@@ -191,7 +21,7 @@
         <div class="container">
             <div class="row">
                 <!--TODO: add href for home-->
-                <a id="logo">Logo</a>
+                <a id="logo" href="#"><img src='{%static "/app/images/logo_parichit.JPG" %}' alt = "A" height="20%" width="20%"></a>
                 <div class="log">
                     <button type="button" class="login" data-toggle="modal" data-target="#loginModal" id="login">Login</button>
                     <button type="button" class="signup" data-toggle="modal" data-target="#signupModal" id="signup"  >Signup</button>
@@ -274,7 +104,9 @@
                 {% block content %}
                 {% endblock %}
             </div>
+            
         </div>
     </div>
+    
 </body>
 </html>
