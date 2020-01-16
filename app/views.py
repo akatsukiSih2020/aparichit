@@ -6,6 +6,10 @@ from app.models import launchpad,data
 from django.core import serializers
 from django.core.files.storage import default_storage
 import json
+import pickle
+import utils
+
+
 # Create your views here.
 def home(request):
     return render(request,'app/home.html')
@@ -81,11 +85,21 @@ def cluster(request):
         # print("cluster")
         return render(request,'app/cluster.html')
     elif request.method == 'POST':
-        #ml goes here
+        with open("app/model/model", 'rb') as f:
+            model = pickle.load(f)
+        #predict goes here
         myfile=request.POST.get('file[]')
         if(type(myfile)==list):
             myfile=myfile[-1]
-        print(myfile)
+        x_test = utils.preprocess('app/Data/'+ myfile)
+        print(x_test)
+        pred_object_no = model.predict(x_test)
+        pred_object = {
+            0 : 'Helicopter',
+            1 : 'AirPlane'
+        }
+        return_item_1 = pred_object[pred_object_no]
+        ##return pred_object
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
