@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.models import User
+from app.models import launchpad
+from django.core import serializers
+import json
 # Create your views here.
 def home(request):
     return render(request,'app/home.html')
@@ -38,7 +41,13 @@ def signup(request):
 
 def launch(request):
     if request.method == 'GET':
-        return render(request,'app/launchpad.html')
+        id=request.user.username
+        data=launchpad.objects.filter(user=id)
+        data=serializers.serialize('json', data)
+        dat =   data.replace("'","\"")
+        d = json.loads(dat)
+        # print(d)
+        return render(request,'app/launchpad.html',{'launch_pads':d})
     elif request.method == 'POST':
         return JsonResponse({'success': 'true'})
     
