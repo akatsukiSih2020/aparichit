@@ -6,8 +6,16 @@
 {% block content %}
   <div id="full_body">
   {% include 'app/side_nav.html' %}
-  <a href="{% url 'new_file' %}" class="btn btn-primary">Add data</a><br></br>
-
+  
+  <h2>
+    <strong>Upload Files:</strong>
+  </h2>
+  <form id="upload-form" action="" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input id="file-picker" type="file" name="file" accept="*" multiple>
+  <div id="msg"></div>
+  <input type="submit" value="Upload!" id="upload-button">
+  
   <table class="table">
     <thead class="thead-inverse">
       <tr>
