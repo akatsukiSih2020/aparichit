@@ -10,15 +10,16 @@
   <h2>
     <strong>Upload Files:</strong>
   </h2>
-  <form id="upload-form" action="" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  <input id="file-picker" type="file" name="file" accept="*" multiple>
-  <div id="msg"></div>
-  <input type="submit" value="Upload!" id="upload-button">
-  </form>
-  <table class="table">
+    <form id="upload-form" action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input id="file-picker" type="file" name="file" accept="*" multiple>
+        <div id="msg"></div>
+        <input type="submit" value="Upload!" id="upload-button">
+    </form>
+  <table class="table" id="shTable">
     <thead class="thead-inverse">
       <tr>
+        <th>Select</th>
         <th>Name</th>
         <th>Time</th>
       </tr>
@@ -26,12 +27,15 @@
     <tbody>
         {% for file in file_added %}
            <tr>
+             <td>
+              <input type="checkbox" class="form-check-input checkedsingle" name="{{file.fields.inputfile_path}}"  value="{{file.fields.inputfile_path}}">
+             </td>
             <td>{{file.fields.inputfile_path}}</td> 
             <td>{{file.fields.time}}</td>
            </tr>
         {% endfor %}
     </tbody>
   </table>
+  <button type="button" onclick="predict();" class="btn btn-dark">Predict</button>
   </div>
-<a href="{% url 'cluster' %}"> {% include 'app/next_button.html' %} </a>
 {% endblock %}
