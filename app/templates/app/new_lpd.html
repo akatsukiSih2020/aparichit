@@ -8,7 +8,7 @@
 
   <h1>New launchpad</h1>
 
-  <form action="{% url 'login' %}" method="POST">
+  <form action="{% url 'new_lpd' %}" method="POST">
     {% csrf_token %}
     <div class="field">Name :
     <input type="text" required="required" name="name">
@@ -35,7 +35,8 @@
       </select>
     <span class="label">Missile</span>
     </div><br>
+    <button type="submit">Save Changes</button>
   </form>
 
-  <a href="{% url 'launchpad' %}" class="btn btn-primary">Save Changes</a>
+  <!-- <a href="{% url 'launchpad' %}" class="btn btn-primary">Save Changes</a> -->
 {% endblock %}

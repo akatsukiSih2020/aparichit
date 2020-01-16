@@ -11,4 +11,4 @@ class launchpad(models.Model):
     name=models.CharField(max_length=30)
     latitude=models.FloatField()
     longitude=models.FloatField()
-    altitude=models.FloatField()
+    altitude=models.FloatField(default=0, null=True)
