@@ -8,21 +8,34 @@
 
   <h1>New launchpad</h1>
 
-  <table class="table">
-    <thead class="thead-inverse">
-      <tr>
-        <th>Latitude</th>
-        <th>Longitude</th>
-        <th>Altitude</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-      	<td><input type="number" name="Latitude"></td>
-      	<td><input type="number" name="Longitude"></td>
-      	<td><input type="number" name="Altitude"></td>
-      </tr>
-    </tbody>
-  </table>
+  <form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    <div class="field">Name :
+    <input type="text" required="required" name="name">
+    <span class="label">Name</span>
+    </div>
+
+    <div class="field">Longitude :
+    <input type="number" required="required" name="longitude">
+    <span class="label">Longitude</span>
+    </div>
+
+    <div class="field">Latitude :
+    <input type="number" required="required" name="latitude">
+    <span class="label">Latitude</span>
+    </div>
+
+    <div class="field">Missile :
+      <select id = "myList">
+               <option value = "1">Select Missile</option>
+               <option value = "2">Nirbhay</option>
+               <option value = "3">Agni</option>
+               <option value = "4">Astra</option>
+               <option value = "5">BrahMos</option>
+      </select>
+    <span class="label">Missile</span>
+    </div><br>
+  </form>
+
   <a href="{% url 'launchpad' %}" class="btn btn-primary">Save Changes</a>
 {% endblock %}
