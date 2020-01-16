@@ -2,6 +2,7 @@ from django.db import models
 
 class data(models.Model):
     user=models.CharField(max_length=30)
+    time=models.DateField(auto_now_add=True)
     inputfile_path=models.CharField(max_length=50)
     processedfile_path=models.CharField(max_length=50,blank=True)
     prediction=models.CharField(max_length=30,blank=True)

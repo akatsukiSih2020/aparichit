@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponseRedirect
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.models import User
-from app.models import launchpad
+from app.models import launchpad,data
 from django.core import serializers
+from django.core.files.storage import default_storage
 import json
 # Create your views here.
 def home(request):
@@ -52,12 +53,27 @@ def launch(request):
     
 def upload(request):
     if request.method == 'GET':
-        return render(request,'app/upload.html')
+        id=request.user.username
+        
+        instance=data.objects.filter(user=id)  
+        instance=serializers.serialize('json', instance)
+        dat =   instance.replace("'","\"")
+        d = json.loads(dat)
+        return render(request,'app/upload.html',{'file_added':d})
     elif request.method == 'POST':
         # return JsonResponse({'success': 'true'})
-        my_uploaded_file = request.FILES['my_uploaded_file'].read() 
-        
-        return render(request,'app/upload.html')
+        try:
+            myfile = request.FILES['file']
+        except:
+            pass
+        id=request.user.username        
+        if  data.objects.filter(user=id,inputfile_path=myfile.name).count()==0:
+            file_name = default_storage.save('app/data/'+ request.user.username+'/' +myfile.name, myfile)  
+            instance=data(user=request.user.username,inputfile_path=myfile.name)
+            instance.save()
+        else:
+            print("file already exist")
+        return HttpResponseRedirect("upload")
     
 def cluster(request):
     if request.method == 'GET':

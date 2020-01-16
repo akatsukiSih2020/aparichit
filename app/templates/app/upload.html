@@ -15,7 +15,7 @@
   <input id="file-picker" type="file" name="file" accept="*" multiple>
   <div id="msg"></div>
   <input type="submit" value="Upload!" id="upload-button">
-  
+  </form>
   <table class="table">
     <thead class="thead-inverse">
       <tr>
@@ -24,10 +24,10 @@
       </tr>
     </thead>
     <tbody>
-        {% for file in file_added.all %}
+        {% for file in file_added %}
            <tr>
-            <td>{{file.name}}</td> 
-            <td>{{file.time_added}}</td>
+            <td>{{file.fields.inputfile_path}}</td> 
+            <td>{{file.fields.time}}</td>
            </tr>
         {% endfor %}
     </tbody>
