@@ -42,11 +42,10 @@ def signup(request):
 def launch(request):
     if request.method == 'GET':
         id=request.user.username
-        data=launchpad.objects.filter(user=id)
+        data=launchpad.objects.filter(user=id)  
         data=serializers.serialize('json', data)
         dat =   data.replace("'","\"")
         d = json.loads(dat)
-        # print(d)
         return render(request,'app/launchpad.html',{'launch_pads':d})
     elif request.method == 'POST':
         return JsonResponse({'success': 'true'})
@@ -55,19 +54,24 @@ def upload(request):
     if request.method == 'GET':
         return render(request,'app/upload.html')
     elif request.method == 'POST':
-        return JsonResponse({'success': 'true'})
+        # return JsonResponse({'success': 'true'})
+        my_uploaded_file = request.FILES['my_uploaded_file'].read() 
+        
+        return render(request,'app/upload.html')
     
 def cluster(request):
     if request.method == 'GET':
         return render(request,'app/cluster.html')
     elif request.method == 'POST':
-        return JsonResponse({'success': 'true'})
+        # return JsonResponse({'success': 'true'})
+        return render(request,'app/cluster.html')
     
 def visualize(request):
     if request.method == 'GET':
         return render(request,'app/visualize.html')
     elif request.method == 'POST':
-        return JsonResponse({'success': 'true'})
+        # return JsonResponse({'success': 'true'})
+        return render(request,'app/visualize.html')
 
 def new_lpd(request):
     return render(request,'app/new_lpd.html')
