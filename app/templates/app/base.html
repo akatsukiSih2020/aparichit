@@ -12,10 +12,10 @@
   <body>
    {% block body %}
     <div class="container">
-      <ol class="breadcrumb my-4">
+      {% comment %} <ol class="breadcrumb my-4">
         {% block breadcrumb %}
         {% endblock %}
-      </ol>
+      </ol> {% endcomment %}
       {% block content %}
       {% endblock %}
     </div>
