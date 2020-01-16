@@ -8,6 +8,7 @@ urlpatterns = [
     path('/logout',views.logo,name="logou"),
     path('/signup',views.signup,name='signup'),
     path('/launchpad/new_lpd',views.new_lpd,name='new_lpd'),
+    path('/launch',views.launch_attack,name='launch'),
     path('/launchpad',views.launch,name='launchpad'),
     path('/upload/new_file',views.new_file,name='new_file'),
     path('/upload',views.upload,name='upload'),

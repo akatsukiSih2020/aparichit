@@ -14,21 +14,22 @@
         <th>Name</th>
         <th>Latitude</th>
         <th>Longitude</th>
-        <th>Altitude</th>
+        <th>Missile</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-      {% for pad_info in launch_pads %}
+      {% for pad_info in obj %}
       <br>
         <tr>
           <td class="align-middle">{{ pad_info.fields.name }}</td>
           <td class="align-middle">{{ pad_info.fields.latitude }}</td>
           <td class="align-middle">{{ pad_info.fields.longitude }}</td>
-          <td class="align-middle">{{ pad_info.fields.altitude }} </td>
           <td><button type="button" class="close">X</button></td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
+
+<a href="{% url 'upload' %}"> {% include 'app/next_button.html' %} </a>
 {% endblock %}
