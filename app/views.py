@@ -74,3 +74,6 @@ def new_lpd(request):
     
 def new_file(request):
     return render(request,'app/new_file.html') 
+
+def launch_attack(request):
+    return render(request,'app/launch.html')
