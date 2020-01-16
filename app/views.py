@@ -93,10 +93,9 @@ def new_lpd(request):
     if request.method == 'GET':
         return render(request, 'app/new_lpd.html')
     elif request.method == 'POST':
-        print("there")
         id = request.user.username
         obj = launchpad(user= id ,name= request.POST['name'], latitude = request.POST['latitude'], 
-            longitude = request.POST['longitude'])
+            longitude = request.POST['longitude'], missile = request.POST['missile'])
         obj.save()
     return redirect('launchpad')
 
