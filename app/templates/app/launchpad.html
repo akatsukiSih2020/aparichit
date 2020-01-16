@@ -1,4 +1,7 @@
 {% extends 'app/base.html' %}
+{% load static %}
+
+<script src="{% static "/app/js/app.js" %}" type="text/javascript"></script>
 
 {% block content %}
 
@@ -20,7 +23,12 @@
           <td class="align-middle">{{ pad_info.fields.name }}</td>
           <td class="align-middle">{{ pad_info.fields.latitude }}</td>
           <td class="align-middle">{{ pad_info.fields.longitude }}</td>
-          <td><button type="button" class="close">X</button></td>
+          <td class="align-middle">{{ pad_info.fields.missile }}</td>
+          <td><form action="{% url 'launch' %}" method="GET">
+              {% csrf_token %}
+                 <button class = "btn btn-default" name="DeleteButton" value="{{ pad_info.fields.id }}">X</button>
+              </form>
+          </td>
         </tr>
       {% endfor %}
     </tbody>

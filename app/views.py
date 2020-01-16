@@ -44,6 +44,7 @@ def launch(request):
     if request.method == 'GET':
         id=request.user.username
         data=launchpad.objects.filter(user=id)  
+        print("\n\n\n",data)
         data=serializers.serialize('json', data)
         dat =   data.replace("'","\"")
         d = json.loads(dat)
@@ -101,6 +102,7 @@ def new_lpd(request):
         return render(request, 'app/new_lpd.html')
     elif request.method == 'POST':
         id = request.user.username
+        print(request.POST)
         obj = launchpad(user= id ,name= request.POST['name'], latitude = request.POST['latitude'], 
             longitude = request.POST['longitude'], missile = request.POST['missile'])
         obj.save()
