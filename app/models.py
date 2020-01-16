@@ -7,6 +7,7 @@ class data(models.Model):
     prediction=models.CharField(max_length=30,blank=True)
 class launchpad(models.Model):
     user=models.CharField(max_length=30)
+    name=models.CharField(max_length=30)
     latitude=models.FloatField()
     longitude=models.FloatField()
     altitude=models.FloatField()
