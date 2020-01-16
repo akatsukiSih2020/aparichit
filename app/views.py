@@ -90,8 +90,15 @@ def visualize(request):
         return render(request,'app/visualize.html')
 
 def new_lpd(request):
-    return render(request,'app/new_lpd.html')
-    
+    if request.method == 'GET':
+        return render(request, 'app/new_lpd.html')
+    elif request.method == 'POST':
+        id = request.user.username
+        obj = launchpad(user= id ,name= request.POST['name'], latitude = request.POST['latitude'], 
+            longitude = request.POST['longitude'], missile = request.POST['missile'])
+        obj.save()
+    return redirect('launchpad')
+
 def new_file(request):
     return render(request,'app/new_file.html') 
 
