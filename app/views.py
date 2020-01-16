@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.models import User
+from app.models import launchpad
+from django.core import serializers
 # Create your views here.
-def hom(request):
+def home(request):
     return render(request,'app/home.html')
 def log(request):
     if request.method == 'POST':
@@ -59,4 +61,9 @@ def visualize(request):
         return render(request,'app/visualize.html')
     elif request.method == 'POST':
         return JsonResponse({'success': 'true'})
+
+def new_lpd(request):
+    return render(request,'app/new_lpd.html')
     
+def new_file(request):
+    return render(request,'app/new_file.html') 
