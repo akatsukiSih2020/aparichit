@@ -74,14 +74,21 @@ def upload(request):
         else:
             print("file already exist")
         return HttpResponseRedirect("upload")
-    
+#here
 def cluster(request):
     if request.method == 'GET':
+        # print("cluster")
         return render(request,'app/cluster.html')
     elif request.method == 'POST':
-        # return JsonResponse({'success': 'true'})
-        return render(request,'app/cluster.html')
-    
+        #ml goes here
+        myfile=request.POST.get('file[]')
+        if(type(myfile)==list):
+            myfile=myfile[-1]
+        print(myfile)
+        # return render(request,'app/cluster.html')
+        # return HttpResponseRedirect("home")
+        return JsonResponse({'success': 'true'})
+#here    
 def visualize(request):
     if request.method == 'GET':
         return render(request,'app/visualize.html')
@@ -94,6 +101,6 @@ def new_lpd(request):
     
 def new_file(request):
     return render(request,'app/new_file.html') 
-
+#here
 def launch_attack(request):
     return render(request,'app/launch.html')
