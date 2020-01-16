@@ -3,3 +3,6 @@ __pycache__
 *__pycache__*
 
 *.sqlite3
+
+app/data/*
+app/data
