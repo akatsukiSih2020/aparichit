@@ -1,0 +1,28 @@
+{% extends 'app/base.html' %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">Launchpad Configuration</li>
+{% endblock %}
+
+{% block content %}
+
+  <h1>New launchpad</h1>
+
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Altitude</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+      	<td><input type="number" name="Latitude"></td>
+      	<td><input type="number" name="Longitude"></td>
+      	<td><input type="number" name="Altitude"></td>
+      </tr>
+    </tbody>
+  </table>
+  <a href="{% url 'launchpad' %}" class="btn btn-primary">Save Changes</a>
+{% endblock %}
