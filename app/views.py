@@ -10,11 +10,12 @@ import pickle
 # from . import utils
 import csv
 from collections import defaultdict
+from . import utils
+from . import lstm
 
-
-# Create your views here.
 def home(request):
     return render(request,'app/home.html')
+
 def log(request):
     if request.method == 'POST':
 
@@ -57,12 +58,14 @@ def launch(request):
         return render(request,'app/launchpad.html',{'launch_pads':d})
     elif request.method == 'POST':
         return JsonResponse({'success': 'true'})
+
 def del_launchpad(request):
     if request.method == 'POST':
         instance = launchpad.objects.get(user=request.user.username,name=request.POST.get('DeleteButton'))
         instance.delete()
         # return JsonResponse({'success': 'true'})
         return HttpResponseRedirect("launchpad")
+
 def del_data(request):
     if request.method == 'POST':
         instance = data.objects.get(user=request.user.username,inputfile_path=request.POST.get('DeleteButton'))
@@ -70,6 +73,7 @@ def del_data(request):
         default_storage.delete('app/data/'+ request.user.username+'/' +request.POST.get('DeleteButton'))
         # return JsonResponse({'success': 'true'})
         return HttpResponseRedirect("upload")
+
 def upload(request):
     if request.method == 'GET':
         id=request.user.username
@@ -92,7 +96,7 @@ def upload(request):
         else:
             print("file already exist")
         return HttpResponseRedirect("upload")
-#here
+
 def cluster(request):
     if request.method == 'GET':
         # print("cluster")
@@ -126,11 +130,11 @@ def cluster(request):
         obj.prediction=return_item_1
         obj.save()
         request.session['prediction']=myfile
-        ##return pred_object
+        prediction_df = lstm.process('app/Data/'+id + '/' + myfile)
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
-#here    
+
 def visualize(request):
     if request.method == 'GET':
         #pass data for map
@@ -169,6 +173,6 @@ def new_lpd(request):
 
 def new_file(request):
     return render(request,'app/new_file.html') 
-#here
+
 def launch_attack(request):
     return render(request,'app/launch.html')

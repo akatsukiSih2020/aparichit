@@ -2,18 +2,23 @@
 {% load static %}
 
 <html>
- <head>
+<head>
 
-      <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+    <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}"> 
     <!--script src="https://cdn-webgl.eegeo.com/eegeojs/api/v0.1.780/eegeo.js"></script-->
     <!--script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script-->
-      <script src="{% static "/app/js/app.js" %}" type="text/javascript"></script>
-      <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="{% static "/app/js/app.js" %}" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" integrity="sha256-OweaP/Ic6rsV+lysfyS4h+LM6sRwuO3euTYfr6M124g=" crossorigin="anonymous" />
+    <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
    </head>
 
 {% block content %}
 
-  <a href="{% url 'new_lpd' %}" class="btn btn-primary">Add launchpad</a><br><br>
+ <div id='launchpad-btn'>
+  <a href="{% url 'home' %}" class="btn grey darken-2">Go Back</a>
+  <a href="{% url 'new_lpd' %}" class="btn grey darken-2">Add launchpad</a><br><br>
+</div>
   <table class="table">
     <thead class="thead-inverse">
       <tr>
@@ -34,7 +39,7 @@
           <td class="align-middle">{{ pad_info.fields.missile }}</td>
           <td><form action="{% url 'del_launchpad' %}" method="POST">
               {% csrf_token %}
-                 <button class = "btn btn-default" name="DeleteButton" value="{{ pad_info.fields.name }}">X</button>
+                 <button class = "btn btn-default grey darken-2" name="DeleteButton" value="{{ pad_info.fields.name }}">X</button>
               </form>
           </td>
         </tr>
@@ -42,13 +47,14 @@
     </tbody>
   </table>
 
-  <div id = "map" style = "width: 900px; height: 410px"></div>
+  <div id = "map" ></div>
+
       <script>
          // Creating map options
          var mapOptions = {
             center: [19.0760, 72.8777],
       //[51.517327, -0.120005]
-            zoom: 12
+            zoom: 9
          }
          
          // Creating a map object
