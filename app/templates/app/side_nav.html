@@ -8,23 +8,19 @@
 <!-- <script src="{% static "/app/js/app.js" %}" type="text/javascript"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
-
-
 <body>
 <!--img src='{%static "/app/images/logo_parichit.jpg" %}' alt = "A" -->
 <div id="mySidenav" class="sidenav">
-<a href="{% url 'home' %}">
+  <a href="{% url 'home' %}">
   <img id ="logo-file" src='{%static "/app/images/logo_parichit.jpg" %}' alt = "A">  
   </a>
   <a class="closebtn" onclick="closeNav()">&times;</a>
-
   <a href="{% url 'upload' %}">Upload Data</a>
   <a href="{% url 'launchpad' %}">Configure Launchpad</a>
   <a href="{% url 'cluster' %}">Predict</a>
   <a href="{% url 'visualize' %}">Visualize</a>
-   <a href="{% url 'launch' %}">Launch</a>
+  <a href="{% url 'launch' %}">Launch</a>
 </div>
-
 <div id="main">
 <span style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
 </div>
