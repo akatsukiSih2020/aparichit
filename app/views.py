@@ -55,11 +55,21 @@ def launch(request):
         return render(request,'app/launchpad.html',{'launch_pads':d})
     elif request.method == 'POST':
         return JsonResponse({'success': 'true'})
-    
+def del_launchpad(request):
+    if request.method == 'POST':
+        instance = launchpad.objects.get(user=request.user.username,name=request.POST.get('DeleteButton'))
+        instance.delete()
+        # return JsonResponse({'success': 'true'})
+        return HttpResponseRedirect("launchpad")
+def del_data(request):
+    if request.method == 'POST':
+        instance = data.objects.get(user=request.user.username,inputfile_path=request.POST.get('DeleteButton'))
+        instance.delete()
+        # return JsonResponse({'success': 'true'})
+        return HttpResponseRedirect("upload")
 def upload(request):
     if request.method == 'GET':
         id=request.user.username
-        
         instance=data.objects.filter(user=id)  
         instance=serializers.serialize('json', instance)
         dat =   instance.replace("'","\"")
@@ -82,7 +92,17 @@ def upload(request):
 #here
 def cluster(request):
     if request.method == 'GET':
-        return render(request,'app/cluster.html')
+        # print("cluster")
+        try:
+            myfile=request.session['prediction']
+            id=request.user.username
+            instance=data.objects.filter(user=id,inputfile_path=myfile)  
+            instance=serializers.serialize('json', instance)
+            dat = instance.replace("'","\"")
+            d = json.loads(dat)
+        except:
+            d={}
+        return render(request,'app/cluster.html',{'pred':d})
     elif request.method == 'POST':
         id=request.user.username
         with open("app/model/model", 'rb') as f:
@@ -101,6 +121,10 @@ def cluster(request):
         obj=data.objects.get(user=id,inputfile_path=myfile)
         obj.prediction=return_item_1
         obj.save()
+        request.session['prediction']=myfile
+        ##return pred_object
+        # return render(request,'app/cluster.html')
+        # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
 #here    
 def visualize(request):
