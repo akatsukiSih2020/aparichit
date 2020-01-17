@@ -7,7 +7,7 @@ from django.core import serializers
 from django.core.files.storage import default_storage
 import json
 import pickle
-import utils
+from . import utils
 
 
 # Create your views here.
@@ -82,26 +82,25 @@ def upload(request):
 #here
 def cluster(request):
     if request.method == 'GET':
-        # print("cluster")
         return render(request,'app/cluster.html')
     elif request.method == 'POST':
+        id=request.user.username
         with open("app/model/model", 'rb') as f:
             model = pickle.load(f)
         #predict goes here
         myfile=request.POST.get('file[]')
         if(type(myfile)==list):
             myfile=myfile[-1]
-        x_test = utils.preprocess('app/Data/'+ myfile)
-        print(x_test)
+        x_test = utils.preprocess('app/Data/'+id + '/' + myfile)
         pred_object_no = model.predict(x_test)
         pred_object = {
             0 : 'Helicopter',
             1 : 'AirPlane'
         }
-        return_item_1 = pred_object[pred_object_no]
-        ##return pred_object
-        # return render(request,'app/cluster.html')
-        # return HttpResponseRedirect("home")
+        return_item_1 = pred_object[pred_object_no[0]]
+        obj=data.objects.get(user=id,inputfile_path=myfile)
+        obj.prediction=return_item_1
+        obj.save()
         return JsonResponse({'success': 'true'})
 #here    
 def visualize(request):
