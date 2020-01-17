@@ -57,6 +57,6 @@ def process(df_path):
     history = model.fit(X, y, epochs=100, batch_size=1, verbose=2, shuffle=False)
 
     future_3 = get_result(model.predict([[y[-1:]]]).reshape((-1, 3)), scaler)
-
-    return future_3, y[-1:].reshape((-1,3))
+    latest_true = get_result(y[-1:].reshape((-1,3)), scaler)
+    return future_3, latest_true
 

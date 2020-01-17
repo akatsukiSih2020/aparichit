@@ -8,6 +8,7 @@ from django.core.files.storage import default_storage
 import json
 import pickle
 import csv
+import pandas as pd
 from collections import defaultdict
 from . import utils
 from . import lstm
@@ -128,10 +129,14 @@ def cluster(request):
         return_item_1 = pred_object[pred_object_no[0]]
         obj=data.objects.get(user=id,inputfile_path=myfile)
         obj.prediction=return_item_1
-        obj.save()
-        request.session['prediction']=myfile
+        # obj.save()
+        request.session['prediction'] = myfile
+        request.session['visualize'] = myfile
         prediction_df, last_true = lstm.process('app/Data/'+id + '/' + myfile)
-        print(last_true)
+        obj.processedfile_path='processed_' + myfile
+        obj.save()
+        #TODO : Altitude jugaad
+        prediction_df.to_csv('app/Data/'+id + '/processed_' + myfile)
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
@@ -141,17 +146,8 @@ def visualize(request):
         #pass data for map
         myfile=request.session['file']
         id=request.user.username
-        print(id,myfile)
-        columns = defaultdict(list) # each value in each column is appended to a list
-        with open('app/Data/'+id + '/' + myfile) as f:
-            reader = csv.DictReader(f) # read rows into a dictionary format
-            for row in reader: # read a row as {column1: value1, column2: value2,...}
-                for (k,v) in row.items(): # go over each column name and value 
-                    columns[k].append(v) # append the value into the appropriate list
-        # print(columns['Lat'])
-        # print(columns['Long'])
-        mylist = zip(columns['Lat'], columns['Long'])
-        
+        df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
+        mylist = df[['Lat','Long']].values 
         return render(request,'app/visualize.html',{'csv':mylist})
     elif request.method == 'POST':
         myfile=request.POST.get('file[]')
@@ -159,7 +155,6 @@ def visualize(request):
             myfile=myfile[-1]
         request.session['file']=myfile
         return JsonResponse({'success': 'true'})
-        # return render(request,'app/visualize.html')
 
 def new_lpd(request):
     if request.method == 'GET':
