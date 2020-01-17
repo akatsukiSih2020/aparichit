@@ -7,8 +7,11 @@ from django.core import serializers
 from django.core.files.storage import default_storage
 import json
 import pickle
+import csv
+from collections import defaultdict
 from . import utils
-
+from . import lstm
+from . import cosys
 
 def home(request):
     return render(request,'app/home.html')
@@ -67,6 +70,7 @@ def del_data(request):
     if request.method == 'POST':
         instance = data.objects.get(user=request.user.username,inputfile_path=request.POST.get('DeleteButton'))
         instance.delete()
+        default_storage.delete('app/data/'+ request.user.username+'/' +request.POST.get('DeleteButton'))
         # return JsonResponse({'success': 'true'})
         return HttpResponseRedirect("upload")
 
@@ -126,17 +130,36 @@ def cluster(request):
         obj.prediction=return_item_1
         obj.save()
         request.session['prediction']=myfile
-        ##return pred_object
+        prediction_df, last_true = lstm.process('app/Data/'+id + '/' + myfile)
+        print(last_true)
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
 
 def visualize(request):
     if request.method == 'GET':
-        return render(request,'app/visualize.html')
+        #pass data for map
+        myfile=request.session['file']
+        id=request.user.username
+        print(id,myfile)
+        columns = defaultdict(list) # each value in each column is appended to a list
+        with open('app/Data/'+id + '/' + myfile) as f:
+            reader = csv.DictReader(f) # read rows into a dictionary format
+            for row in reader: # read a row as {column1: value1, column2: value2,...}
+                for (k,v) in row.items(): # go over each column name and value 
+                    columns[k].append(v) # append the value into the appropriate list
+        # print(columns['Lat'])
+        # print(columns['Long'])
+        mylist = zip(columns['Lat'], columns['Long'])
+        
+        return render(request,'app/visualize.html',{'csv':mylist})
     elif request.method == 'POST':
-        # return JsonResponse({'success': 'true'})
-        return render(request,'app/visualize.html')
+        myfile=request.POST.get('file[]')
+        if(type(myfile)==list):
+            myfile=myfile[-1]
+        request.session['file']=myfile
+        return JsonResponse({'success': 'true'})
+        # return render(request,'app/visualize.html')
 
 def new_lpd(request):
     if request.method == 'GET':

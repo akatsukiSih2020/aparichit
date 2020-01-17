@@ -5,6 +5,10 @@
 {% block content %}
   {% include 'app/side_nav.html' %}
 
+{% for a,b in csv %}
 
+<b>{{a}}</b>,{{b}}<br>
+
+{% endfor %}
   <a href="{% url 'launch' %}"> {% include 'app/next_button.html' %} </a>
 {% endblock %}
