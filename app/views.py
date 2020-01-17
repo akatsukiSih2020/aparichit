@@ -54,7 +54,18 @@ def launch(request):
         return render(request,'app/launchpad.html',{'launch_pads':d})
     elif request.method == 'POST':
         return JsonResponse({'success': 'true'})
-    
+def del_launchpad(request):
+    if request.method == 'POST':
+        instance = launchpad.objects.get(user=request.user.username,name=request.POST.get('DeleteButton'))
+        instance.delete()
+        # return JsonResponse({'success': 'true'})
+        return HttpResponseRedirect("launchpad")
+def del_data(request):
+    if request.method == 'POST':
+        instance = data.objects.get(user=request.user.username,inputfile_path=request.POST.get('DeleteButton'))
+        instance.delete()
+        # return JsonResponse({'success': 'true'})
+        return HttpResponseRedirect("upload")
 def upload(request):
     if request.method == 'GET':
         id=request.user.username

@@ -32,7 +32,7 @@
           <td class="align-middle">{{ pad_info.fields.latitude }}</td>
           <td class="align-middle">{{ pad_info.fields.longitude }}</td>
           <td class="align-middle">{{ pad_info.fields.missile }}</td>
-          <td><form action="{% url 'launch' %}" method="GET">
+          <td><form action="{% url 'del_launchpad' %}" method="POST">
               {% csrf_token %}
                  <button class = "btn btn-default" name="DeleteButton" value="{{ pad_info.fields.name }}">X</button>
               </form>

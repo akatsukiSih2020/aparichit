@@ -14,5 +14,7 @@ urlpatterns = [
     path('/upload',views.upload,name='upload'),
     path('/cluster',views.cluster,name='cluster'),
     path('/visualize',views.visualize,name='visualize'),
+    path('/del_launchpad',views.del_launchpad,name='del_launchpad'),
+    path('/del_data',views.del_data,name='del_data'),
 ]
 
