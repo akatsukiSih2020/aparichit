@@ -100,9 +100,10 @@ def cluster(request):
             instance=serializers.serialize('json', instance)
             dat = instance.replace("'","\"")
             d = json.loads(dat)
+            d = d[0]['fields']
         except:
             d={}
-        return render(request,'app/cluster.html',{'pred':d})
+        return render(request,'app/cluster.html',{'pred':d.get('prediction','')})
     elif request.method == 'POST':
         id=request.user.username
         with open("app/model/model", 'rb') as f:
