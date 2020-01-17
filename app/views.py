@@ -8,7 +8,7 @@ from django.core.files.storage import default_storage
 import json
 import pickle
 from . import utils
-
+from . import lstm
 
 def home(request):
     return render(request,'app/home.html')
@@ -126,7 +126,7 @@ def cluster(request):
         obj.prediction=return_item_1
         obj.save()
         request.session['prediction']=myfile
-        ##return pred_object
+        prediction_df = lstm.process('app/Data/'+id + '/' + myfile)
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
