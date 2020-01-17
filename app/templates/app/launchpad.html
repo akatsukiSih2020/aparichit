@@ -1,0 +1,128 @@
+{% include 'app/base.html' %}
+{% load static %}
+
+<html>
+<head>
+
+    <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}"> 
+    <!--script src="https://cdn-webgl.eegeo.com/eegeojs/api/v0.1.780/eegeo.js"></script-->
+    <!--script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script-->
+    <script src="{% static "/app/js/app.js" %}" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" integrity="sha256-OweaP/Ic6rsV+lysfyS4h+LM6sRwuO3euTYfr6M124g=" crossorigin="anonymous" />
+    <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+   </head>
+
+{% block content %}
+
+ <div id='launchpad-btn'>
+  <a href="{% url 'home' %}" class="btn grey darken-2">Go Back</a>
+  <a href="{% url 'new_lpd' %}" class="btn grey darken-2">Add launchpad</a><br><br>
+</div>
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Name</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Missile</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pad_info in launch_pads %}
+      
+        <tr id={{pad_info.fields.name}}>
+          <td class="align-middle">{{ pad_info.fields.name }}</td>
+          <td class="align-middle">{{ pad_info.fields.latitude }}</td>
+          <td class="align-middle">{{ pad_info.fields.longitude }}</td>
+          <td class="align-middle">{{ pad_info.fields.missile }}</td>
+          <td><form action="{% url 'del_launchpad' %}" method="POST">
+              {% csrf_token %}
+                 <button class = "btn btn-default grey darken-2" name="DeleteButton" value="{{ pad_info.fields.name }}">X</button>
+              </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div id = "map" ></div>
+
+      <script>
+         // Creating map options
+         var mapOptions = {
+            center: [19.0760, 72.8777],
+      //[51.517327, -0.120005]
+            zoom: 9
+         }
+         
+         // Creating a map object
+         var map = new L.map('map', mapOptions);
+    //var map = L.Wrld.map("map", "c7a01773c760c638f361b5c1b60d147a", {
+        //center: [51.517327, -0.120005],
+        //zoom: 12
+        // });
+     
+     //L.eeGeo.map
+     //their api keys 2207a928392ebe113122fce9e16c3a48
+         
+         // Creating a Layer object
+        var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+         
+         // Adding layer to the map
+         map.addLayer(layer);
+     
+         locateLaunchPads();
+          
+    function locateLaunchPads(){
+    var lpJSON = 
+    {"launchpads":
+      [
+
+       {% for x in launch_pads %}
+           {"name":'{{x.fields.name}}', "lat": '{{x.fields.latitude}}', "lng":' {{x.fields.longitude}}'}, 
+       {% endfor %}
+      ]   
+    }
+    
+    var lp;
+    
+    for(lp in lpJSON.launchpads){
+        lat=parseFloat(lpJSON.launchpads[lp].lat); 
+        lng=parseFloat(lpJSON.launchpads[lp].lng);
+        name=lpJSON.launchpads[lp].name;
+        var marker = L.marker([lat, lng]).addTo(map).bindPopup(name);
+
+          marker.on('mouseover', function (e) {
+            var popup = e.target.getPopup();
+            var content = popup.getContent();
+
+            paintRed(content);
+          });
+          marker.on('mouseout', function (e) {
+            var popup = e.target.getPopup();
+            var content = popup.getContent();
+
+            paintOriginal(content);
+          });
+          marker.on('click', function (e) {
+            this.openPopup();
+            //disable mouseout behavior here?
+          });
+     }
+}        
+    function paintRed(name)
+      {
+        document.getElementById(name).style.backgroundColor = "red";
+      }  
+
+    function paintOriginal(name)
+      {   
+        document.getElementById(name).style.backgroundColor = "white";
+      }     
+    
+    </script>
+
+<a href="{% url 'upload' %}"> {% include 'app/next_button.html' %} </a>
+{% endblock %}

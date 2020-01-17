@@ -1,0 +1,161 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+    height: 3500px;
+    z-index: 1;
+    background-image: url(../images/home_bg.JPG);
+    background-size: 100% 100%;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.process
+{
+    margin-top: 10px;
+    background-color: #00000099;
+    padding-top: 10px;
+    text-align: center;
+    padding-bottom: 100px;
+}
+
+#roadmap-svg{
+  display: block;
+  max-width: 600px;
+  margin: 20px auto;
+  overflow: visible;
+    z-index: 0;
+}
+
+#roadmap-svg #head{
+  fill: red;
+}
+
+#roadmap-svg .track{
+  fill: none;
+  stroke-dashoffset: 3px;
+  stroke: grey;
+  stroke-width: 4;
+  stroke-miterlimit: 10;
+  stroke-dasharray: 20;
+}
+#roadmap-svg .body{
+  fill: none;
+  stroke-dashoffset: 3px;
+  stroke: white;
+  stroke-width: 10;
+  stroke-miterlimit: 10;
+  stroke-dasharray: 0;
+  stroke-linecap="round" 
+  transition: stroke-dashoffset ease-in-out 0.2s;
+}
+
+.center-line{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px solid red;
+  background-color: rgba(255,255,255,0.9);
+}
+.icons img
+    {
+        z-index: 5;
+    }
+#launchpad a,
+#upload a,
+#cluster a,
+#predict a,
+#visualize a,
+#launch a{
+    text-decoration: none;
+    color: black;
+    
+}
+#launchpad
+    {
+        background: white;
+        border-radius: 50%;
+        font-size: 15px;
+        height: 100px;
+        width: 100px;
+        margin-left: 58%;
+        margin-bottom: -200px;
+        margin-top: 100px;
+        z-index: 5;
+        padding:30px 10px;
+    } 
+#upload
+    {
+        background: white;
+        border-radius: 50%;
+        font-size: 15px;
+        height: 100px;
+        width: 100px;
+        margin-left: 35%;
+        margin-bottom: -650px;
+        margin-top: 550px;
+        z-index: 5;
+        padding:30px 10px;
+    }
+#cluster
+    {
+        background: white;
+        border-radius: 50%;
+        font-size: 15px;
+        height: 100px;
+        width: 100px;
+        margin-left: 55%;
+        margin-bottom: -985px;
+        margin-top: 885px;
+        z-index: 5;
+        padding:30px 10px;
+    }
+#predict
+    {
+        background: white;
+        border-radius: 50%;
+        font-size: 15px;
+        height: 100px;
+        width: 100px;
+        margin-left: 56%;
+        margin-bottom: -1430px;
+        margin-top: 1330px;
+        z-index: 5;
+        padding:30px 10px;
+    }
+#visualize
+    {
+        background: white;
+        border-radius: 50%;
+        font-size: 15px;
+        height: 100px;
+        width: 100px;
+        margin-left: 52%;
+        margin-bottom: -1870px;
+        margin-top: 1770px;
+        z-index: 5;
+        padding:30px 10px;
+    }
+#launch
+    {
+        background: white;
+        border-radius: 50%;
+        font-size: 15px;
+        height: 100px;
+        width: 100px;
+        margin-left: 40%;
+        margin-bottom: -2280px;
+        margin-top: 2180px;
+        z-index: 5;
+        padding:30px 10px;
+    }
+#start_process
+{
+    text-decoration: none;
+    padding: 10px 30px;
+    background: black;
+    color: white;
+    border-radius: 20px;
+    
+}
+
