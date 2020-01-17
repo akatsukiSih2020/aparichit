@@ -7,11 +7,11 @@ from django.core import serializers
 from django.core.files.storage import default_storage
 import json
 import pickle
-# from . import utils
 import csv
 from collections import defaultdict
 from . import utils
 from . import lstm
+from . import cosys
 
 def home(request):
     return render(request,'app/home.html')
@@ -130,7 +130,8 @@ def cluster(request):
         obj.prediction=return_item_1
         obj.save()
         request.session['prediction']=myfile
-        prediction_df = lstm.process('app/Data/'+id + '/' + myfile)
+        prediction_df, last_true = lstm.process('app/Data/'+id + '/' + myfile)
+        print(last_true)
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})

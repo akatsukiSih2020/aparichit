@@ -5,12 +5,11 @@ import math
 import time
 import pandas as pd
 import numpy as np
-import cosys
 from datetime import datetime
 from pprint import pprint as pp
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
-
+from . import cosys
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
@@ -30,7 +29,7 @@ def get_data(df, L, forecast=3):
 
     return X, y
 
-def get_result(result):
+def get_result(result,scaler):
     if result.shape != (3,3):
         result = result.reshape((-1, 3))
 
@@ -55,9 +54,9 @@ def process(df_path):
     model.compile(loss='mae', optimizer='adam')
 
     # fit network
-    history = model.fit(X, y, epochs=100, batch_size=1, verbose=0, shuffle=False)
+    history = model.fit(X, y, epochs=100, batch_size=1, verbose=2, shuffle=False)
 
-    future_3 = get_result(model.predict([[y[-1:]]]).reshape((-1, 3)))
+    future_3 = get_result(model.predict([[y[-1:]]]).reshape((-1, 3)), scaler)
 
-    return future_3
+    return future_3, y[-1:].reshape((-1,3))
 
