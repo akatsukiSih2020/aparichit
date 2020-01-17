@@ -1,10 +1,18 @@
 <!doctype html>
+{% load static %}
 <html>
   <head>
+    <link href="{% static '/app/css/app.css' %}" rel="stylesheet" type="text/css" > 
     <!-- Place your kit's code here -->
     <script src="https://kit.fontawesome.com/c8f4a90b74.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css" integrity="sha256-13EKEXRsynh3cmmNF1dlW6uvoC1SZVaW94bIHZQJoMU=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" integrity="sha256-OweaP/Ic6rsV+lysfyS4h+LM6sRwuO3euTYfr6M124g=" crossorigin="anonymous" />
   </head>
   <body>
-<i class="fas fa-rocket">&nbsp;&nbsp;Next</i>  
+   
+      <div class = 'next-btn'>
+     <button class=" grey darken-3 btn-large"><i class="fas fa-rocket">next</i></button>
+      </div>
+   
 </body>
 </html>

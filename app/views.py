@@ -7,12 +7,16 @@ from django.core import serializers
 from django.core.files.storage import default_storage
 import json
 import pickle
-import utils
+import csv
+import pandas as pd
+from collections import defaultdict
+from . import utils
+from . import lstm
+from . import cosys
 
-
-# Create your views here.
 def home(request):
     return render(request,'app/home.html')
+
 def log(request):
     if request.method == 'POST':
 
@@ -55,11 +59,25 @@ def launch(request):
         return render(request,'app/launchpad.html',{'launch_pads':d})
     elif request.method == 'POST':
         return JsonResponse({'success': 'true'})
-    
+
+def del_launchpad(request):
+    if request.method == 'POST':
+        instance = launchpad.objects.get(user=request.user.username,name=request.POST.get('DeleteButton'))
+        instance.delete()
+        # return JsonResponse({'success': 'true'})
+        return HttpResponseRedirect("launchpad")
+
+def del_data(request):
+    if request.method == 'POST':
+        instance = data.objects.get(user=request.user.username,inputfile_path=request.POST.get('DeleteButton'))
+        instance.delete()
+        default_storage.delete('app/data/'+ request.user.username+'/' +request.POST.get('DeleteButton'))
+        # return JsonResponse({'success': 'true'})
+        return HttpResponseRedirect("upload")
+
 def upload(request):
     if request.method == 'GET':
         id=request.user.username
-        
         instance=data.objects.filter(user=id)  
         instance=serializers.serialize('json', instance)
         dat =   instance.replace("'","\"")
@@ -79,37 +97,64 @@ def upload(request):
         else:
             print("file already exist")
         return HttpResponseRedirect("upload")
-#here
+
 def cluster(request):
     if request.method == 'GET':
         # print("cluster")
-        return render(request,'app/cluster.html')
+        try:
+            myfile=request.session['prediction']
+            id=request.user.username
+            instance=data.objects.filter(user=id,inputfile_path=myfile)  
+            instance=serializers.serialize('json', instance)
+            dat = instance.replace("'","\"")
+            d = json.loads(dat)
+            d = d[0]['fields']
+        except:
+            d={}
+        return render(request,'app/cluster.html',{'pred':d.get('prediction','')})
     elif request.method == 'POST':
+        id=request.user.username
         with open("app/model/model", 'rb') as f:
             model = pickle.load(f)
         #predict goes here
         myfile=request.POST.get('file[]')
         if(type(myfile)==list):
             myfile=myfile[-1]
-        x_test = utils.preprocess('app/Data/'+ myfile)
-        print(x_test)
+        x_test = utils.preprocess('app/Data/'+id + '/' + myfile)
         pred_object_no = model.predict(x_test)
         pred_object = {
             0 : 'Helicopter',
             1 : 'AirPlane'
         }
-        return_item_1 = pred_object[pred_object_no]
-        ##return pred_object
+        return_item_1 = pred_object[pred_object_no[0]]
+        obj=data.objects.get(user=id,inputfile_path=myfile)
+        obj.prediction=return_item_1
+        # obj.save()
+        request.session['prediction'] = myfile
+        request.session['visualize'] = myfile
+        prediction_df, last_true = lstm.process('app/Data/'+id + '/' + myfile)
+        obj.processedfile_path='processed_' + myfile
+        obj.save()
+        #TODO : Altitude jugaad
+        prediction_df.to_csv('app/Data/'+id + '/processed_' + myfile)
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
-#here    
+
 def visualize(request):
     if request.method == 'GET':
-        return render(request,'app/visualize.html')
+        #pass data for map
+        myfile=request.session['file']
+        id=request.user.username
+        df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
+        mylist = df[['Lat','Long']].values 
+        return render(request,'app/visualize.html',{'csv':mylist})
     elif request.method == 'POST':
-        # return JsonResponse({'success': 'true'})
-        return render(request,'app/visualize.html')
+        myfile=request.POST.get('file[]')
+        if(type(myfile)==list):
+            myfile=myfile[-1]
+        request.session['file']=myfile
+        return JsonResponse({'success': 'true'})
 
 def new_lpd(request):
     if request.method == 'GET':
@@ -124,6 +169,6 @@ def new_lpd(request):
 
 def new_file(request):
     return render(request,'app/new_file.html') 
-#here
+
 def launch_attack(request):
     return render(request,'app/launch.html')

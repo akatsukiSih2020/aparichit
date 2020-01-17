@@ -240,9 +240,9 @@
 
   </head>
 
-{% block content %}
+{% comment %} {% block content %} {% endcomment %}
   {% include 'app/side_nav.html' %}
-
+ <h1> Object Predicted is {{ pred|safe }} </h1>
 
   <body>
     <div id="viewDiv"></div>
