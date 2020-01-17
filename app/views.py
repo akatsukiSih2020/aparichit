@@ -10,9 +10,9 @@ import pickle
 from . import utils
 
 
-# Create your views here.
 def home(request):
     return render(request,'app/home.html')
+
 def log(request):
     if request.method == 'POST':
 
@@ -55,18 +55,21 @@ def launch(request):
         return render(request,'app/launchpad.html',{'launch_pads':d})
     elif request.method == 'POST':
         return JsonResponse({'success': 'true'})
+
 def del_launchpad(request):
     if request.method == 'POST':
         instance = launchpad.objects.get(user=request.user.username,name=request.POST.get('DeleteButton'))
         instance.delete()
         # return JsonResponse({'success': 'true'})
         return HttpResponseRedirect("launchpad")
+
 def del_data(request):
     if request.method == 'POST':
         instance = data.objects.get(user=request.user.username,inputfile_path=request.POST.get('DeleteButton'))
         instance.delete()
         # return JsonResponse({'success': 'true'})
         return HttpResponseRedirect("upload")
+
 def upload(request):
     if request.method == 'GET':
         id=request.user.username
@@ -89,7 +92,7 @@ def upload(request):
         else:
             print("file already exist")
         return HttpResponseRedirect("upload")
-#here
+
 def cluster(request):
     if request.method == 'GET':
         # print("cluster")
@@ -127,7 +130,7 @@ def cluster(request):
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
-#here    
+
 def visualize(request):
     if request.method == 'GET':
         return render(request,'app/visualize.html')
@@ -148,6 +151,6 @@ def new_lpd(request):
 
 def new_file(request):
     return render(request,'app/new_file.html') 
-#here
+
 def launch_attack(request):
     return render(request,'app/launch.html')
