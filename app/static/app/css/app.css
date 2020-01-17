@@ -56,4 +56,21 @@ body {
     width: 150px;
     height: 99px;
   }
- 
+ .next-btn{
+padding-top: 20px;
+text-decoration: none;
+padding-left:90%;
+padding-bottom: 20px;
+ }
+
+ #launchpad-btn{
+
+ padding-top: 20px;
+ }
+ .back-btn{
+  padding-top: 20px;
+ }
+ #map{
+  width: 100%;
+   height: 410px
+ }
