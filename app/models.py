@@ -12,3 +12,4 @@ class launchpad(models.Model):
     latitude=models.FloatField()
     longitude=models.FloatField()
     altitude=models.FloatField(default=0, null=True)
+    missile=models.CharField(default= 'No missile', max_length=30)

@@ -1,23 +1,15 @@
 {% extends 'app/base.html' %}
 
-{% block breadcrumb %}
-  <li class="breadcrumb-item active">Launchpad Configuration</li>
-{% endblock %}
 
 {% block content %}
 
   <h1>New launchpad</h1>
 
-  <form action="{% url 'new_lpd' %}" method="POST">
+  <form action="{% url 'new_lpd' %}" method="POST" novalidate>
     {% csrf_token %}
     <div class="field">Name :
     <input type="text" required="required" name="name">
     <span class="label">Name</span>
-    </div>
-
-    <div class="field">Longitude :
-    <input type="number" required="required" name="longitude">
-    <span class="label">Longitude</span>
     </div>
 
     <div class="field">Latitude :
@@ -25,13 +17,18 @@
     <span class="label">Latitude</span>
     </div>
 
+    <div class="field">Longitude :
+    <input type="number" required="required" name="longitude">
+    <span class="label">Longitude</span>
+    </div>
+
     <div class="field">Missile :
-      <select id = "myList">
-               <option value = "1">Select Missile</option>
-               <option value = "2">Nirbhay</option>
-               <option value = "3">Agni</option>
-               <option value = "4">Astra</option>
-               <option value = "5">BrahMos</option>
+      <select id = "myList" name="missile">
+               <option value = "None">Select Missile</option>
+               <option value = "Nirbhay">Nirbhay</option>
+               <option value = "Agni">Agni</option>
+               <option value = "Astra">Astra</option>
+               <option value = "BrahMos">BrahMos</option>
       </select>
     <span class="label">Missile</span>
     </div><br>
