@@ -1,10 +1,180 @@
+<!DOCTYPE html>
 {% load static %}
+<html>
+<head>
+      <title>Leaflet sample</title>
+      <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+	  <!--script src="https://cdn-webgl.eegeo.com/eegeojs/api/v0.1.780/eegeo.js"></script-->
+	  <!--script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script-->
+    
+    <link href="{% static '/app/css/home.css' %}" rel="stylesheet" type="text/css" > 
+     <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-<script src="{% static "/app/js/app.js" %}" type="text/javascript"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+   
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+      <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="{% static '/app/js/attack.js' %}" type="text/javascript"></script>
+    <style>
+        html,body{
+            height: 100%;
+        }
+        
+        #map{
+            width: 70%;
+            height: 99%;
+            margin-top: -70px;
+            margin-left: 5%;
+            float: left;
+        }
+        #info_panel{
+            float: right;
+            width: 25%;
+            height: 99%;
+            background: #dddddd;
+            margin-top: -70px;
+        }
+        #info_panel .row{
+            width: 100%;
+            text-align: center;
+            
+        }
+        #info_panel #heading{
+            font-weight: bold;
+            padding-top: 30px;
+            
+        }
+        #info_panel #details,
+        #info_panel #launch_details{
+            padding-left: 10px;
+        }
+        .btn{
+            border: none;
+            outline: none;
+            background: black;
+            padding: 10px 50px;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+        .btn:focus{
+            color: white;
+            background: black;
+        }
+        .btn:hover{
+            color: black;
+            background: gray;
+        }
+        
+    </style>
+</head>
+
 
 {% block content %}
   {% include 'app/side_nav.html' %}
+    <body>
+      <div id = "map" ></div>
+        <div id="info_panel">
+            <div class="row"><p id="heading">Select Launchpad!!!</p></div>
+            <hr>
+            <div id="details"></div>
+            <div class="row"><button class="btn" id="next" onclick="plotPolyline()">Next</button></div>
+            <div id="launch_details"></div>
+            <div class="row"><button class="btn" id="launch">Launch</button></div>
+            
 
-
-  <a href="{% url 'home' %}"> {% include 'app/next_button.html' %} </a>
+        </div>
+      <script>
+         // Creating map options
+         var mapOptions = {
+            center: [22.593726, 75.9375],
+			//[51.517327, -0.120005]
+            zoom: 5
+         }
+         
+         // Creating a map object
+         var map = new L.map('map', mapOptions);
+		//var map = L.Wrld.map("map", "c7a01773c760c638f361b5c1b60d147a", {
+        //center: [51.517327, -0.120005],
+        //zoom: 12
+        // });
+		 
+		 //L.eeGeo.map
+		 //their api keys 2207a928392ebe113122fce9e16c3a48
+         
+         // Creating a Layer object
+        var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+         
+         // Adding layer to the map
+         map.addLayer(layer);
+		 
+		
+	locateLaunchPads();
+          
+    function locateLaunchPads(){
+    var lpJSON = {"launchpads":[{"name":"lp1","lat":"10.358151","lng":"76.68457"},{"name":"lp2","lat":"28.690588","lng":"77.124023"},{"name":"lp3","lat":"18.812718","lng":"73.520508"},{"name":"lp4","lat":"25.244696","lng":"84.023438"},]  }
+    
+    var launchpad;
+    
+    for(lp in lpJSON.launchpads){
+        lat=parseFloat(lpJSON.launchpads[lp].lat); 
+        lng=parseFloat(lpJSON.launchpads[lp].lng); 
+        L.marker([lat, lng]).on('click',getLatLng).addTo(map);
+    }
+}
+    function getLatLng(e){
+        latt = e.latlng.lat;
+        long = e.latlng.lng;
+        x="Latitude: " + latt + "<br><br>Longitude: " +long;
+        
+        document.getElementById("heading").innerHTML = "Location of Launchpad:<br>";
+        document.getElementById("details").innerHTML = x;
+        document.getElementById("next").style.display = "inline";
+        
+    }
+    function plotPolyline(){
+        var latlngs = [
+            [59.842949, 6.34394],
+            [59.803799,6.55234],
+            [59.791931,6.78226],
+            [59.78159,6.99678],
+            [59.745838,7.1861],
+            [59.686668,7.41729],
+            [59.631321,7.63248],
+            [59.572948,7.85655],
+            [59.522301,8.04824],
+            [59.461262,8.27792],
+            [59.40131,8.50171],
+            [59.34856,8.6955],
+            [59.287109,8.91995],
+            [59.22578,9.14255],
+            [59.161331,9.37363],
+            [59.11161,9.55043],
+            [59.041489,9.79678],
+            [58.966648,10.05732],
+            [58.904362,10.271933],
+            [58.843147,10.480865]
+        ];
+        var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+        // zoom the map to the polyline
+        map.fitBounds(polyline.getBounds());
+        getDetails();
+    }      
+function getDetails(){
+    document.getElementById("launch_details").innerHTML = "Angle:"+"<br><br>Time:";
+    document.getElementById("launch").style.display = "inline";
+}
+	
+      </script>
+   </body>
+  
 {% endblock %}
+</html>
