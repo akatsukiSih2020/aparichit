@@ -84,6 +84,46 @@ function predict(){
       });
   
 }
+
+function v(){
+
+  var getChecked = function () {
+      return $('#shTable').find('input[type="checkbox"]')
+        .filter(':checked')
+        .toArray()
+        .map(function (x) {
+          return $(x).attr('name');
+        });
+    }
+    filename = getChecked();
+  //   console.log(students);
+  $.ajaxSetup({
+      beforeSend: function (xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+          // Send the token to same-origin, relative URLs only.
+          // Send the token only if the method warrants CSRF protection
+          // Using the CSRFToken value acquired earlier
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+        $('#wait').show();
+      }
+    });
+  $.ajax({
+      url: 'visualize',
+      type: 'POST',
+      dataType: "json",
+      data: {'file':filename} ,
+      complete: function () {
+      //   $('#wait').hide();
+      },
+      success: function (data) {
+        //console.log(data);
+      //   window.location.reload();
+      window.location.href = "visualize";
+      }
+    });
+
+}
 // $("#file-picker").change(
 
   function fileUpload(){

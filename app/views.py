@@ -54,11 +54,21 @@ def launch(request):
         return render(request,'app/launchpad.html',{'launch_pads':d})
     elif request.method == 'POST':
         return JsonResponse({'success': 'true'})
-    
+def del_launchpad(request):
+    if request.method == 'POST':
+        instance = launchpad.objects.get(user=request.user.username,name=request.POST.get('DeleteButton'))
+        instance.delete()
+        # return JsonResponse({'success': 'true'})
+        return HttpResponseRedirect("launchpad")
+def del_data(request):
+    if request.method == 'POST':
+        instance = data.objects.get(user=request.user.username,inputfile_path=request.POST.get('DeleteButton'))
+        instance.delete()
+        # return JsonResponse({'success': 'true'})
+        return HttpResponseRedirect("upload")
 def upload(request):
     if request.method == 'GET':
         id=request.user.username
-        
         instance=data.objects.filter(user=id)  
         instance=serializers.serialize('json', instance)
         dat =   instance.replace("'","\"")
@@ -82,7 +92,16 @@ def upload(request):
 def cluster(request):
     if request.method == 'GET':
         # print("cluster")
-        return render(request,'app/cluster.html')
+        try:
+            myfile=request.session['prediction']
+            id=request.user.username
+            instance=data.objects.filter(user=id,inputfile_path=myfile)  
+            instance=serializers.serialize('json', instance)
+            dat = instance.replace("'","\"")
+            d = json.loads(dat)
+        except:
+            d={}
+        return render(request,'app/cluster.html',{'pred':d})
     elif request.method == 'POST':
         with open("app/model/model", 'rb') as f:
             model = pickle.load(f)
@@ -98,6 +117,7 @@ def cluster(request):
             1 : 'AirPlane'
         }
         return_item_1 = pred_object[pred_object_no]
+        request.session['prediction']=myfile
         ##return pred_object
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
