@@ -92,7 +92,7 @@ function v(){
         });
     }
     filename = getChecked();
-  //   console.log(students);
+    console.log(filename);
   $.ajaxSetup({
       beforeSend: function (xhr, settings) {
         if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {

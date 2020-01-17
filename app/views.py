@@ -7,7 +7,9 @@ from django.core import serializers
 from django.core.files.storage import default_storage
 import json
 import pickle
-from . import utils
+# from . import utils
+import csv
+from collections import defaultdict
 
 
 # Create your views here.
@@ -65,6 +67,7 @@ def del_data(request):
     if request.method == 'POST':
         instance = data.objects.get(user=request.user.username,inputfile_path=request.POST.get('DeleteButton'))
         instance.delete()
+        default_storage.delete('app/data/'+ request.user.username+'/' +request.POST.get('DeleteButton'))
         # return JsonResponse({'success': 'true'})
         return HttpResponseRedirect("upload")
 def upload(request):
@@ -130,10 +133,28 @@ def cluster(request):
 #here    
 def visualize(request):
     if request.method == 'GET':
-        return render(request,'app/visualize.html')
+        #pass data for map
+        myfile=request.session['file']
+        id=request.user.username
+        print(id,myfile)
+        columns = defaultdict(list) # each value in each column is appended to a list
+        with open('app/Data/'+id + '/' + myfile) as f:
+            reader = csv.DictReader(f) # read rows into a dictionary format
+            for row in reader: # read a row as {column1: value1, column2: value2,...}
+                for (k,v) in row.items(): # go over each column name and value 
+                    columns[k].append(v) # append the value into the appropriate list
+        # print(columns['Lat'])
+        # print(columns['Long'])
+        mylist = zip(columns['Lat'], columns['Long'])
+        
+        return render(request,'app/visualize.html',{'csv':mylist})
     elif request.method == 'POST':
-        # return JsonResponse({'success': 'true'})
-        return render(request,'app/visualize.html')
+        myfile=request.POST.get('file[]')
+        if(type(myfile)==list):
+            myfile=myfile[-1]
+        request.session['file']=myfile
+        return JsonResponse({'success': 'true'})
+        # return render(request,'app/visualize.html')
 
 def new_lpd(request):
     if request.method == 'GET':
