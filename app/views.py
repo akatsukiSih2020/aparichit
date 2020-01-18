@@ -129,7 +129,7 @@ def cluster(request):
         myfile=request.POST.get('file[]')
         if(type(myfile)==list):
             myfile=myfile[-1]
-        x_test = utils.preprocess('app/Data/'+id + '/' + myfile)
+        x_test = utils.preprocess('app/data/'+id + '/' + myfile)
         pred_object_no = model.predict(x_test)
         pred_object = {
             0 : 'Helicopter',
@@ -141,7 +141,7 @@ def cluster(request):
         # obj.save()
         request.session['prediction'] = myfile
         request.session['visualize'] = myfile
-        prediction_df, last_true = lstm.process('app/Data/'+id + '/' + myfile)
+        prediction_df, last_true = lstm.process('app/data/'+id + '/' + myfile)
         obj.processedfile_path='processed_' + myfile
         obj.save()
         #TODO : Altitude jugaad
@@ -155,7 +155,7 @@ def cluster(request):
             lt = alts[i]
         print(delta,alts)
         prediction_df['Alt'] = alts
-        prediction_df.to_csv('app/Data/'+id + '/processed_' + myfile)
+        prediction_df.to_csv('app/data/'+id + '/processed_' + myfile)
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
@@ -165,7 +165,7 @@ def visualize(request):
         #pass data for map
         myfile=request.session['file']
         id=request.user.username
-        df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
+        df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
         mylist = df[['Lat','Long','Alt']].values 
         pro_df = pd.read_csv('app/Data/'+id + '/processed_' + myfile, index_col = 0)
         pro_mylist = pro_df[['Lat','Long','Alt']].values 
@@ -203,7 +203,7 @@ def launch_attack(request):
         d = json.loads(dat)
 
         myfile=request.session['file']
-        df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
+        df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
         mylist = df[['Lat','Long']].values 
 
         return render(request,'app/launch.html',{'launch_pads':d,'csv':mylist})
@@ -214,7 +214,7 @@ def launch_attack(request):
         print(type(request.POST.get('lat')))
 
         lat_lpd, long_lpd = (float(request.POST.get('lat')), float(request.POST.get('long'))) ##fetch from frontend
-        df = pd.read_csv('app/Data/' + id +'/' + myfile, index_col = 0)
+        df = pd.read_csv('app/data/' + id +'/' + myfile, index_col = 0)
         lat_i, long_i, alt = utils.intersect(df, lat_lpd,long_lpd)
         speed = 1027.778 #(m/s) ##later configure missile param...
         #speed if for Bhramos
