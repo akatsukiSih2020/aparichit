@@ -10,6 +10,7 @@ import pickle
 import csv
 import pandas as pd
 from collections import defaultdict
+import math
 from . import utils
 from . import lstm
 from . import cosys
@@ -171,4 +172,20 @@ def new_file(request):
     return render(request,'app/new_file.html') 
 
 def launch_attack(request):
-    return render(request,'app/launch.html')
+    if request.method == 'GET':
+        return render(request,'app/launch.html')
+    elif request.method == 'POST':
+        id = request.user.username
+        myfile = request.session['prediction']
+        lat_lpd, long_lpd = (54.6872, 25.2797) ##fetch from frontend
+        df = pd.read_csv('app/Data/' + id +'/' + myfile, index_col = 0)
+        lat_i, long_i, alt = intersect(df, lat_lpd,long_lpd)
+        speed = 1027.778 #(m/s) ##later configure missile param...
+        #speed if for Bhramos
+        dist = distance(lat_lpd, long_lpd, lat_i, long_i)
+        time =  dist/speed #secs 
+        angle = math.atan(alt/dist)
+        ##send time and angle to frontend xD
+        ## draw straight line from point (lat_i, long_i to lat_lpd, long_lpd)
+        return render(request,'app/launch.html')
+    
