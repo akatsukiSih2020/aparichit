@@ -197,21 +197,18 @@ def launch_attack(request):
         return render(request,'app/launch.html',{'launch_pads':d,'csv':mylist})
     elif request.method == 'POST':
         id = request.user.username
-        # myfile = request.session['prediction']
+        myfile = request.session['prediction']
         print(request.POST.get('lat'),request.POST.get('long'))
         print(type(request.POST.get('lat')))
 
         lat_lpd, long_lpd = (float(request.POST.get('lat')), float(request.POST.get('long'))) ##fetch from frontend
-        # df = pd.read_csv('app/Data/' + id +'/' + myfile, index_col = 0)
-        # lat_i, long_i, alt = intersect(df, lat_lpd,long_lpd)
-        # speed = 1027.778 #(m/s) ##later configure missile param...
-        # #speed if for Bhramos
-        # dist = distance(lat_lpd, long_lpd, lat_i, long_i)
-        # # time =  dist/speed #secs 
-        # angle = math.atan(alt/dist)
-        time=5
-        angle=23.35
-        ##send time and angle to frontend xD
+        df = pd.read_csv('app/Data/' + id +'/' + myfile, index_col = 0)
+        lat_i, long_i, alt = intersect(df, lat_lpd,long_lpd)
+        speed = 1027.778 #(m/s) ##later configure missile param...
+        #speed if for Bhramos
+        dist = distance(lat_lpd, long_lpd, lat_i, long_i)
+        time =  dist/speed #secs 
+        angle = math.atan(alt/dist)
         ## draw straight line from point (lat_i, long_i to lat_lpd, long_lpd)
         # return render(request,'app/launch.html')
         # return redirect('launch')
