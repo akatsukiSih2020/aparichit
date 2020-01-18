@@ -126,6 +126,11 @@
             [58.904362,10.271933],
             [58.843147,10.480865]
         ];
+        var x1 = {{ lat_i }};
+        var y1 = {{ long_i }};
+        var x2 = {{ lat_pd }};
+        var y2 = {{ long_pd }};
+
         var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
         // zoom the map to the polyline
         map.fitBounds(polyline.getBounds());

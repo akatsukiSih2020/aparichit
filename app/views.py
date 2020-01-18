@@ -222,8 +222,9 @@ def launch_attack(request):
         time =  dist/speed #secs
         alt = alt*(0.328) 
         angle = math.atan(alt/dist)
-        print(dist,time,speed,angle,alt)
+        # print(dist,time,speed,angle,alt)
         ## draw straight line from point (lat_i, long_i to lat_lpd, long_lpd)
         # return render(request,'app/launch.html')
         # return redirect('launch')
-        return JsonResponse({'success': 'true','time':time,'angle':angle,'lat_i'})
+        return JsonResponse({'success': 'true','time':time,'angle':angle,'lat_i':lat_i,
+                                'long_i':long_i,'lat_pd':lat_pd,'long_pd':long_pd})
