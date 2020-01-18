@@ -145,6 +145,12 @@ padding:10px 20px;
 .icons #launchpad h4{
     margin-left: -35px;
 }
+.icons #predict h4{
+    margin-left: -35px;
+}
+.icons #visualize h4{
+    margin-left: -15px;
+}
 .icons  a {
     background-color: white;
 }
