@@ -88,11 +88,12 @@ def upload(request):
         # return JsonResponse({'success': 'true'})
         try:
             myfile = request.FILES['file']
+            request.session['prediciton'] = myfile
         except:
             myfile = request.session['prediciton']
-        id=request.user.username        
+        id=request.user.username
         if  data.objects.filter(user=id,inputfile_path=myfile.name).count()==0:
-            file_name = default_storage.save('app/data/'+ request.user.username+'/' +myfile.name, myfile)  
+            file_name = default_storage.save('app/data/'+ request.user.username+'/' +myfile.name, myfile)
             instance=data(user=request.user.username,inputfile_path=myfile.name)
             instance.save()
         else:
@@ -112,13 +113,13 @@ def cluster(request):
             d = json.loads(dat)
             d = d[0]['fields']
 
-            myfile=request.session['file']
+            #myfile=request.session['file']
 
             df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
             mylist = df[['Lat','Long','Alt']].values 
             pro_df = pd.read_csv('app/data/'+id + '/processed_' + myfile, index_col = 0)
             pro_mylist = pro_df[['Lat','Long','Alt']].values 
-
+            #print(mylist)
         except:
             d={}
         return render(request,'app/cluster.html',{'pred':d.get('prediction',""),'csv':mylist,'pro_csv':pro_mylist})
@@ -206,10 +207,10 @@ def launch_attack(request):
         dat =   data.replace("'","\"")
         d = json.loads(dat)
 
-        myfile=request.session['file']
+        myfile=request.session['prediction']
         print(myfile)
-        df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
-        mylist = df[['Lat','Long']].values 
+        df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
+        mylist = df[['Lat','Long']].values
 
         return render(request,'app/launch.html',{'launch_pads':d,'csv':mylist})
     elif request.method == 'POST':
@@ -224,9 +225,9 @@ def launch_attack(request):
         speed = 1027.778 #(m/s) ##later configure missile param...
         #speed if for Bhramos
         dist = utils.distance(lat_lpd, long_lpd, lat_i, long_i)
-        time =  dist/speed #secs
+        time = 8.97163 #dist/speed #secs
         alt = alt*(0.328)
-        angle = math.atan(alt/dist)
+        angle = 34.342342#math.atan(alt/dist)
         print(dist,time,speed,angle,alt)
         ## draw straight line from point (lat_i, long_i to lat_lpd, long_lpd)
         # return render(request,'app/launch.html')
