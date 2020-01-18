@@ -89,8 +89,6 @@
             <div class="row"><button class="btn" id="next" onclick="plotPolyline()">Next</button></div>
             <div id="launch_details"></div>
             <div class="row"><button class="btn" id="launch">Launch</button></div>
-            
-
         </div>
       <script>
          // Creating map options
@@ -130,12 +128,20 @@
       ]   
      }
     
-    var launchpad;
+    var lp;
     
     for(lp in lpJSON.launchpads){
         lat=parseFloat(lpJSON.launchpads[lp].lat); 
-        lng=parseFloat(lpJSON.launchpads[lp].lng); 
-        L.marker([lat, lng]).on('click',getLatLng).addTo(map);
+        lng=parseFloat(lpJSON.launchpads[lp].lng);
+        name=lpJSON.launchpads[lp].name;
+        var marker = L.marker([lat, lng]).on('click',getLatLng).addTo(map);
+        marker.bindPopup("<b>"+name+"</b>");
+        marker.on('mouseover',function(e){
+            this.openPopup();
+        });
+        marker.on('mouseout',function(e){
+            this.closePopup();
+        });
     }
 }
     function getLatLng(e){
@@ -149,6 +155,7 @@
         
     }
     function plotPolyline(){
+        
         var latlngs = [
             [59.842949, 6.34394],
             [59.803799,6.55234],
