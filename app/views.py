@@ -226,4 +226,4 @@ def launch_attack(request):
         ## draw straight line from point (lat_i, long_i to lat_lpd, long_lpd)
         # return render(request,'app/launch.html')
         # return redirect('launch')
-        return JsonResponse({'success': 'true','time':time,'angle':angle})
+        return JsonResponse({'success': 'true','time':time,'angle':angle,'lat_i'})
