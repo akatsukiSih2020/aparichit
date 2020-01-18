@@ -79,7 +79,7 @@ def del_data(request):
 def upload(request):
     if request.method == 'GET':
         id=request.user.username
-        instance=data.objects.filter(user=id)  
+        instance=data.objects.filter(user=id)
         instance=serializers.serialize('json', instance)
         dat =   instance.replace("'","\"")
         d = json.loads(dat)
@@ -88,7 +88,7 @@ def upload(request):
         # return JsonResponse({'success': 'true'})
         try:
             myfile = request.FILES['file']
-            request.session['prediciton'] = myfile
+            #request.session['prediciton'] = myfile
         except:
             myfile = request.session['prediciton']
         id=request.user.username
