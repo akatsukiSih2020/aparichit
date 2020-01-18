@@ -11,8 +11,8 @@ import csv
 import pandas as pd
 from collections import defaultdict
 import math
-# from . import utils
-# from . import lstm
+from . import utils
+from . import lstm
 from . import cosys
 
 def home(request):
@@ -203,12 +203,14 @@ def launch_attack(request):
 
         lat_lpd, long_lpd = (float(request.POST.get('lat')), float(request.POST.get('long'))) ##fetch from frontend
         df = pd.read_csv('app/Data/' + id +'/' + myfile, index_col = 0)
-        lat_i, long_i, alt = intersect(df, lat_lpd,long_lpd)
+        lat_i, long_i, alt = utils.intersect(df, lat_lpd,long_lpd)
         speed = 1027.778 #(m/s) ##later configure missile param...
         #speed if for Bhramos
-        dist = distance(lat_lpd, long_lpd, lat_i, long_i)
-        time =  dist/speed #secs 
+        dist = utils.distance(lat_lpd, long_lpd, lat_i, long_i)
+        time =  dist/speed #secs
+        alt = alt*(0.328) 
         angle = math.atan(alt/dist)
+        print(dist,time,speed,angle,alt)
         ## draw straight line from point (lat_i, long_i to lat_lpd, long_lpd)
         # return render(request,'app/launch.html')
         # return redirect('launch')
