@@ -156,6 +156,11 @@
         var polyline2 = {
           type: "polyline", // autocasts as new Polyline()
           paths: [
+          {% for a,b,c in pro_csv %}
+
+            [{{a}},{{b}},{{c}}],
+
+          {% endfor %} 
               // [59.461262,8.27792,33750],
               // [59.40131, 8.50171, 34950],
               // [59.34856,8.6955,35700],

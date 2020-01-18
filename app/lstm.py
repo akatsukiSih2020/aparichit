@@ -54,7 +54,7 @@ def process(df_path):
     model.compile(loss='mae', optimizer='adam')
 
     # fit network
-    history = model.fit(X, y, epochs=100, batch_size=1, verbose=2, shuffle=False)
+    history = model.fit(X, y, epochs=10, batch_size=1, verbose=2, shuffle=False)
 
     future_3 = get_result(model.predict([[y[-1:]]]).reshape((-1, 3)), scaler)
     latest_true = get_result(y[-1:].reshape((-1,3)), scaler)
