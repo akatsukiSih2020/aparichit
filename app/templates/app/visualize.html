@@ -256,11 +256,7 @@
   <body>
     <div id="viewDiv"></div>
   
-{% for a,b,c in csv %}
 
-<b>{{a}}</b>,{{b}},<b>{{c}}</b><br>
-
-{% endfor %} 
   <a href="{% url 'launch' %}"> {% include 'app/next_button.html' %} </a>
 {% endblock %}
 </body>

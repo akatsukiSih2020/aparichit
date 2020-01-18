@@ -85,12 +85,7 @@
          *************************/
 
         // London
-        {% comment %} var point = {
-          type: "point", // autocasts as new Point()
-          x: 59.461262,
-          y: 8.27792,
-          z: 33750
-        }; {% endcomment %}
+        
 
         markerSymbol = {
           type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
@@ -102,12 +97,12 @@
           }
         };
 
-        var pointGraphic = new Graphic({
-          geometry: point,
-          symbol: markerSymbol
-        });
+        //var pointGraphic = new Graphic({
+          //geometry: point,
+         // symbol: markerSymbol
+        //});
 
-        graphicsLayer.add(pointGraphic);
+        //graphicsLayer.add(pointGraphic);
 
         /****************************
          * Add a 3D polyline graphic
@@ -142,16 +137,7 @@
             [{{a}},{{b}},{{c}}],
 
           {% endfor %} 
-            {% comment %} [59.842949, 6.34394, 22125],
-              [59.803799,6.55234,23850],
-              [59.791931,6.78226,25525],
-              [59.78159,6.99678,26800],
-              [59.745838,7.1861,28175],
-              [59.686668,7.41729,29450],
-              [59.631321,7.63248,30400],
-              [59.572948,7.85655,31650],
-              [59.522301,8.04824,32550],
-              [59.461262,8.27792,33750] {% endcomment %}
+    
           ]
         };
 
@@ -176,12 +162,6 @@
             [{{a}},{{b}},{{c}}],
 
           {% endfor %} 
-              {% comment %} [59.461262,8.27792,33750],
-              [59.40131, 8.50171, 34950],
-              [59.34856,8.6955,35700],
-              [59.287109,8.91995,36425],
-              [59.22578,9.14255,36900],
-              [59.161331,9.37363,37000] {% endcomment %}
           ]
         };
 
