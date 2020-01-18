@@ -173,7 +173,13 @@ def new_file(request):
 
 def launch_attack(request):
     if request.method == 'GET':
-        return render(request,'app/launch.html')
+        id=request.user.username
+        data=launchpad.objects.filter(user=id)  
+        print("\n\n\n",data)
+        data=serializers.serialize('json', data)
+        dat =   data.replace("'","\"")
+        d = json.loads(dat)
+        return render(request,'app/launch.html',{'launch_pads':d})
     elif request.method == 'POST':
         id = request.user.username
         myfile = request.session['prediction']
