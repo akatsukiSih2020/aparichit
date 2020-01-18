@@ -1,0 +1,59 @@
+html,body{
+    height: 100%;
+}
+
+#map{
+    width: 70%;
+    height: 99%;
+    margin-top: -70px;
+    margin-left: 5%;
+    float: left;
+}
+#info_panel{
+    float: right;
+    width: 25%;
+    height: 99%;
+    background: #dddddd;
+    margin-top: -70px;
+}
+#info_panel .row{
+    width: 100%;
+    text-align: center;
+    
+}
+#info_panel #heading{
+    font-weight: bold;
+    padding-top: 30px;
+    
+}
+#info_panel #details,
+#info_panel #launch_details{
+    padding-left: 10px;
+}
+.btn{
+    border: none;
+    outline: none;
+    background: black;
+    padding: 10px 50px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 20px;
+    display: none;
+}
+.btn:focus{
+    color: white;
+    background: black;
+}
+.btn:hover{
+    color: black;
+    background: gray;
+}
+.forms-launch{
+    width: 50%;
+    background-color: rgba(0, 0, 0),0.7;
+    border-radius: 25px;
+    margin: 2%;
+    padding:2%;
+    color:whitesmoke;
+     }
