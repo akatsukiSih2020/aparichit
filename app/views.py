@@ -113,9 +113,9 @@ def cluster(request):
             d = d[0]['fields']
 
             myfile=request.session['file']
-            df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
+            df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
             mylist = df[['Lat','Long','Alt']].values 
-            pro_df = pd.read_csv('app/Data/'+id + '/processed_' + myfile, index_col = 0)
+            pro_df = pd.read_csv('app/data/'+id + '/processed_' + myfile, index_col = 0)
             pro_mylist = pro_df[['Lat','Long','Alt']].values 
             
         except:
@@ -167,7 +167,7 @@ def visualize(request):
         id=request.user.username
         df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
         mylist = df[['Lat','Long','Alt']].values 
-        pro_df = pd.read_csv('app/Data/'+id + '/processed_' + myfile, index_col = 0)
+        pro_df = pd.read_csv('app/data/'+id + '/processed_' + myfile, index_col = 0)
         pro_mylist = pro_df[['Lat','Long','Alt']].values 
         # print(pro_mylist)
         # print(mylist)
