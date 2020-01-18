@@ -11,8 +11,8 @@ import csv
 import pandas as pd
 from collections import defaultdict
 import math
-# from . import utils
-# from . import lstm
+from . import utils
+from . import lstm
 from . import cosys
 
 def home(request):
@@ -106,21 +106,22 @@ def cluster(request):
             myfile=request.session['prediction']
             print(myfile)
             id=request.user.username
-            instance=data.objects.filter(user=id,inputfile_path=myfile)  
+            instance=data.objects.filter(user=id,inputfile_path=myfile)
             instance=serializers.serialize('json', instance)
             dat = instance.replace("'","\"")
             d = json.loads(dat)
             d = d[0]['fields']
 
             myfile=request.session['file']
+
             df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
             mylist = df[['Lat','Long','Alt']].values 
             pro_df = pd.read_csv('app/data/'+id + '/processed_' + myfile, index_col = 0)
             pro_mylist = pro_df[['Lat','Long','Alt']].values 
-            
+
         except:
             d={}
-        return render(request,'app/cluster.html',{'pred':d.get('prediction',''),'csv':mylist,'pro_csv':pro_mylist})
+        return render(request,'app/cluster.html',{'pred':d.get('prediction',""),'csv':mylist,'pro_csv':pro_mylist})
     elif request.method == 'POST':
         id=request.user.username
         with open("app/model/model", 'rb') as f:
@@ -144,7 +145,6 @@ def cluster(request):
         prediction_df, last_true = lstm.process('app/data/'+id + '/' + myfile)
         obj.processedfile_path='processed_' + myfile
         obj.save()
-        #TODO : Altitude jugaad
         delta = last_true['Alt'][-2:-1].values[0] - last_true['Alt'][-1:].values[0]
         lt = last_true['Alt'][-1:].values[0]
         alts = prediction_df['Alt']
@@ -168,8 +168,11 @@ def visualize(request):
         id=request.user.username
         df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
         mylist = df[['Lat','Long','Alt']].values 
-        pro_df = pd.read_csv('app/data/'+id + '/processed_' + myfile, index_col = 0)
-        pro_mylist = pro_df[['Lat','Long','Alt']].values 
+        try:
+            pro_df = pd.read_csv('app/data/'+id + '/processed_' + myfile, index_col = 0)
+            pro_mylist = pro_df[['Lat','Long','Alt']].values
+        except:
+            pro_mylist = [] 
         # print(pro_mylist)
         # print(mylist)
         return render(request,'app/visualize.html',{'csv':mylist,'pro_csv':pro_mylist})
@@ -222,7 +225,7 @@ def launch_attack(request):
         #speed if for Bhramos
         dist = utils.distance(lat_lpd, long_lpd, lat_i, long_i)
         time =  dist/speed #secs
-        alt = alt*(0.328) 
+        alt = alt*(0.328)
         angle = math.atan(alt/dist)
         print(dist,time,speed,angle,alt)
         ## draw straight line from point (lat_i, long_i to lat_lpd, long_lpd)
