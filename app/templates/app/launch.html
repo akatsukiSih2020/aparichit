@@ -7,7 +7,7 @@
 	  <!--script src="https://cdn-webgl.eegeo.com/eegeojs/api/v0.1.780/eegeo.js"></script-->
 	  <!--script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script-->
     
-    <link href="{% static '/app/css/home.css' %}" rel="stylesheet" type="text/css" > 
+    <!-- <link href="{% static '/app/css/home.css' %}" rel="stylesheet" type="text/css" >  -->
      <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
@@ -21,68 +21,16 @@
 
       <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script src="{% static '/app/js/attack.js' %}" type="text/javascript"></script>
-    <style>
-        html,body{
-            height: 100%;
-        }
-        
-        #map{
-            width: 70%;
-            height: 99%;
-            margin-top: -70px;
-            margin-left: 5%;
-            float: left;
-        }
-        #info_panel{
-            float: right;
-            width: 25%;
-            height: 99%;
-            background: #dddddd;
-            margin-top: -70px;
-        }
-        #info_panel .row{
-            width: 100%;
-            text-align: center;
-            
-        }
-        #info_panel #heading{
-            font-weight: bold;
-            padding-top: 30px;
-            
-        }
-        #info_panel #details,
-        #info_panel #launch_details{
-            padding-left: 10px;
-        }
-        .btn{
-            border: none;
-            outline: none;
-            background: black;
-            padding: 10px 50px;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            margin-top: 20px;
-            display: none;
-        }
-        .btn:focus{
-            color: white;
-            background: black;
-        }
-        .btn:hover{
-            color: black;
-            background: gray;
-        }
-        
-    </style>
+    <link rel="stylesheet" href="{% static 'css/launch.css' %}">
+   
 </head>
-
-
 {% block content %}
   {% include 'app/side_nav.html' %}
     <body>
       <div id = "map" ></div>
-        <div id="info_panel">
+      <div class='forms'>
+     
+            
             <div class="row"><p id="heading">Select Launchpad!!!</p></div>
             <hr>
             <div id="details"></div>
@@ -90,7 +38,7 @@
             <div id="launch_details"></div>
             <div class="row"><button class="btn" id="launch">Launch</button></div>
             
-
+  
         </div>
       <script>
          // Creating map options

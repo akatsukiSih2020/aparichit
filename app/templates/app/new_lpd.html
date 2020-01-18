@@ -3,7 +3,7 @@
 
 <html>
  <head>
-
+  <link href="{% static '/app/css/app.css' %}" rel="stylesheet" type="text/css" >
       <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
     <!--script src="https://cdn-webgl.eegeo.com/eegeojs/api/v0.1.780/eegeo.js"></script-->
     <!--script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script-->
@@ -13,27 +13,28 @@
 
 
 {% block content %}
-
+<div class='forms'>
   <h1>New launchpad</h1>
 
   <form action="{% url 'new_lpd' %}" method="POST" novalidate>
     {% csrf_token %}
-    <div class="field">Name :
+   
+    <div class="form-group">Name :
     <input type="text" required="required" name="name">
     <span class="label">Name</span>
     </div>
 
-    <div class="field">Latitude :
+    <div class="form-group">Latitude :
     <input type="number" required="required" id="latitude" name="latitude">
     <span class="label">Latitude</span>
     </div>
 
-    <div class="field">Longitude :
+    <div class="form-group">Longitude :
     <input type="number" required="required" id="longitude" name="longitude">
     <span class="label">Longitude</span>
     </div>
 
-    <div class="field">Missile :
+    <div class="form-group">Missile :
       <select id = "myList" name="missile">
                <option value = "None">Select Missile</option>
                <option value = "Nirbhay">Nirbhay</option>
@@ -44,8 +45,9 @@
     <span class="label">Missile</span>
     </div><br>
     <button type="submit">Save Changes</button>
+    <a href="{% url 'launchpad' %}" class="btn btn-dark">Go Back</a>
   </form>
-
+</div>
   <div id = "map" style = "width: 900px; height: 390px"></div>
       <script>
          // Creating map options
@@ -87,6 +89,7 @@
 
          
   </script>
+  
 
   <!-- <a href="{% url 'launchpad' %}" class="btn btn-primary">Save Changes</a> -->
 {% endblock %}
