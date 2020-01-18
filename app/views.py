@@ -176,4 +176,13 @@ def new_file(request):
     return render(request,'app/new_file.html') 
 
 def launch_attack(request):
-    return render(request,'app/launch.html')
+    if request.method == 'GET':
+        id=request.user.username
+        data=launchpad.objects.filter(user=id)  
+        print("\n\n\n",data)
+        data=serializers.serialize('json', data)
+        dat =   data.replace("'","\"")
+        d = json.loads(dat)
+        return render(request,'app/launch.html',{'launch_pads':d})
+    elif request.method == 'POST':
+        return JsonResponse({'success': 'true'})
