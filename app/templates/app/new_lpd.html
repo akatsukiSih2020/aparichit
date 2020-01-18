@@ -13,7 +13,7 @@
 
 
 {% block content %}
-<div class='forms'>
+<div class='forms' style="height: 650px;">
   <h1>New launchpad</h1>
 
   <form action="{% url 'new_lpd' %}" method="POST" novalidate>
@@ -48,7 +48,7 @@
     <a href="{% url 'launchpad' %}" class="btn btn-dark">Go Back</a>
   </form>
 </div>
-  <div id = "map" style = "width: 900px; height: 390px"></div>
+  <div id = "map" style = "width: 50%; height: 650px; float:right; margin-top: -680px; margin-right: 20px; "></div>
       <script>
          // Creating map options
          var mapOptions = {
