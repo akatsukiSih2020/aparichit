@@ -63,6 +63,7 @@ padding-top: 20px;
 text-decoration: none;
 padding-left:90%;
 padding-bottom: 20px;
+margin-bottom: 5%;
  }
 
  #launchpad-btn{
@@ -76,7 +77,18 @@ padding-bottom: 20px;
   width: 100%;
    height: 410px
  }
- .upload-container{
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color:#000;
+  color: white;
+  text-align: center;
+  height:5%;
+}
+.upload-container{
   background-color: rgba(0, 0, 0, 0.86);
   border-radius: 30px;
   padding: 15px;
