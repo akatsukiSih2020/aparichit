@@ -77,6 +77,13 @@ margin-bottom: 5%;
   width: 100%;
    height: 410px
  }
+ .forms{
+width: 50%;
+background-color: rgb(163, 159, 159);
+border-radius: 25px;
+margin: 2%;
+padding:2%;
+ }
 
 .footer {
   position: fixed;
