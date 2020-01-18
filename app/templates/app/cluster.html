@@ -29,6 +29,20 @@
         height: 100%;
         width: 100%;
       }
+
+      #predictText{
+        margin-left: 5%;
+        margin-top: -70px;
+        background-color: grey;
+        font-size: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+        border:black 2px solid;
+        margin-bottom: 10px;
+        color: #ffffff;
+      }
     </style>
 
     <script>
@@ -243,7 +257,7 @@
 
 {% comment %} {% block content %} {% endcomment %}
   {% include 'app/side_nav.html' %}
- <h1> Object Predicted is {{ pred|safe }} </h1>
+ <div id="predictText"> Object Predicted is {{ pred|safe }} </div>
 
   <body>
     <div id="viewDiv"></div>
