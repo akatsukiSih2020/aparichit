@@ -89,7 +89,7 @@ def upload(request):
         try:
             myfile = request.FILES['file']
         except:
-            pass
+            myfile = request.session['prediciton']
         id=request.user.username        
         if  data.objects.filter(user=id,inputfile_path=myfile.name).count()==0:
             file_name = default_storage.save('app/data/'+ request.user.username+'/' +myfile.name, myfile)  
@@ -137,6 +137,16 @@ def cluster(request):
         obj.processedfile_path='processed_' + myfile
         obj.save()
         #TODO : Altitude jugaad
+        delta = last_true['Alt'][-2:-1].values[0] - last_true['Alt'][-1:].values[0]
+        lt = last_true['Alt'][-1:].values[0]
+        alts = prediction_df['Alt']
+        print(alts)
+        prediction_df.drop(columns=['Alt'],inplace= True)
+        for i in range(len(alts)):
+            alts[i] = lt - delta
+            lt = alts[i]
+        print(delta,alts)
+        prediction_df['Alt'] = alts
         prediction_df.to_csv('app/Data/'+id + '/processed_' + myfile)
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
