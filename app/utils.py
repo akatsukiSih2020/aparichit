@@ -1,5 +1,11 @@
 import pandas as pd
 from sklearn.ensemble.forest import RandomForestClassifier
+from math import cos, asin, sqrt
+
+def distance(lat1, lon1, lat2, lon2):
+    p = 0.017453292519943295     #Pi/180
+    a = 0.5 - cos((lat2 - lat1) * p)/2 + cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2
+    return 12742 * asin(sqrt(a))*1000 #2*R*asin...(meterss)
 
 def preprocess(fpath):
     df = pd.read_csv(fpath,index_col = 0)
@@ -33,3 +39,8 @@ def preprocess(fpath):
     row = pd.Series(row)
     row = row.values.reshape((1,-1))
     return row
+
+def intersect(df, lat_pad, long_pad):
+    df = list(df.values)
+    df.sort(key = lambda x : ((x[0]-lat_pad)**2 + (x[1]-long_pad)**2 - x[2]))
+    return df[0][1], df[0][2], df[0][0]

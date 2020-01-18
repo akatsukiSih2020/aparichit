@@ -76,6 +76,7 @@
         map.on('click', addMarker);
 
         function addMarker(e){
+            map.off('click', addMarker);
           // Add marker to map at click location; add popup window
             var newMarker = new L.marker(e.latlng).addTo(map);
             document.getElementById("latitude").value = e.latlng.lat;

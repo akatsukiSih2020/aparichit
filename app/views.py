@@ -7,9 +7,10 @@ from django.core import serializers
 from django.core.files.storage import default_storage
 import json
 import pickle
-# from . import utils
 import csv
+import pandas as pd
 from collections import defaultdict
+import math
 from . import utils
 from . import lstm
 from . import cosys
@@ -129,10 +130,14 @@ def cluster(request):
         return_item_1 = pred_object[pred_object_no[0]]
         obj=data.objects.get(user=id,inputfile_path=myfile)
         obj.prediction=return_item_1
-        obj.save()
-        request.session['prediction']=myfile
+        # obj.save()
+        request.session['prediction'] = myfile
+        request.session['visualize'] = myfile
         prediction_df, last_true = lstm.process('app/Data/'+id + '/' + myfile)
-        print(last_true)
+        obj.processedfile_path='processed_' + myfile
+        obj.save()
+        #TODO : Altitude jugaad
+        prediction_df.to_csv('app/Data/'+id + '/processed_' + myfile)
         # return render(request,'app/cluster.html')
         # return HttpResponseRedirect("home")
         return JsonResponse({'success': 'true'})
@@ -142,17 +147,8 @@ def visualize(request):
         #pass data for map
         myfile=request.session['file']
         id=request.user.username
-        print(id,myfile)
-        columns = defaultdict(list) # each value in each column is appended to a list
-        with open('app/Data/'+id + '/' + myfile) as f:
-            reader = csv.DictReader(f) # read rows into a dictionary format
-            for row in reader: # read a row as {column1: value1, column2: value2,...}
-                for (k,v) in row.items(): # go over each column name and value 
-                    columns[k].append(v) # append the value into the appropriate list
-        # print(columns['Lat'])
-        # print(columns['Long'])
-        mylist = zip(columns['Lat'], columns['Long'])
-        
+        df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
+        mylist = df[['Lat','Long']].values 
         return render(request,'app/visualize.html',{'csv':mylist})
     elif request.method == 'POST':
         myfile=request.POST.get('file[]')
@@ -160,7 +156,6 @@ def visualize(request):
             myfile=myfile[-1]
         request.session['file']=myfile
         return JsonResponse({'success': 'true'})
-        # return render(request,'app/visualize.html')
 
 def new_lpd(request):
     if request.method == 'GET':
@@ -177,4 +172,20 @@ def new_file(request):
     return render(request,'app/new_file.html') 
 
 def launch_attack(request):
-    return render(request,'app/launch.html')
+    if request.method == 'GET':
+        return render(request,'app/launch.html')
+    elif request.method == 'POST':
+        id = request.user.username
+        myfile = request.session['prediction']
+        lat_lpd, long_lpd = (54.6872, 25.2797) ##fetch from frontend
+        df = pd.read_csv('app/Data/' + id +'/' + myfile, index_col = 0)
+        lat_i, long_i, alt = intersect(df, lat_lpd,long_lpd)
+        speed = 1027.778 #(m/s) ##later configure missile param...
+        #speed if for Bhramos
+        dist = distance(lat_lpd, long_lpd, lat_i, long_i)
+        time =  dist/speed #secs 
+        angle = math.atan(alt/dist)
+        ##send time and angle to frontend xD
+        ## draw straight line from point (lat_i, long_i to lat_lpd, long_lpd)
+        return render(request,'app/launch.html')
+    
