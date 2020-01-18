@@ -7,6 +7,7 @@
 	  <!--script src="https://cdn-webgl.eegeo.com/eegeojs/api/v0.1.780/eegeo.js"></script-->
 	  <!--script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script-->
     
+    <!-- <link href="{% static '/app/css/home.css' %}" rel="stylesheet" type="text/css" >  -->
      <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
@@ -20,28 +21,29 @@
 
       <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script src="{% static '/app/js/attack.js' %}" type="text/javascript"></script>
+    <script src="{% static '/app/js/app.js' %}" type="text/javascript"></script>
     <link rel="stylesheet" href="{% static 'css/launch.css' %}">
    
 </head>
 {% block content %}
   {% include 'app/side_nav.html' %}
     <body>
-      <div id = "map" style="width: 70%; height: 745px; margin-top: -70px; float: left; margin-left: 5%;" ></div>
-      <div class='forms' style="float: right; width: 25%;height: 745px; margin: 0; margin-top: -70px;">
+      <div id = "map" ></div>
+      <div class='forms'>
      
             
-            <div class="row" style="text-align: center;"><p id="heading" style="font-size: 15px; font-weight: bold; color: black;">Select Launchpad!!!</p></div>
+            <div class="row"><p id="heading">Select Launchpad!!!</p></div>
             <hr>
-            <div id="details" style="text-align: left; margin-bottom: 20px;"></div>
-            <div class="row" style="text-align: center;"><button class="btn btn-dark" id="next" onclick="plotPolyline()" style="margin :10px; display: none;">Next</button></div>
-            <div id="launch_details"></div>
+            <div id="details"></div>
             <div style='display:none;' id="lat"></div>
             <div style='display:none;' id="long"></div>
-            <div class="row" style="text-align: center;"><button class="btn btn-dark" id="launch" style="margin: 10px; display: none;">Launch</button></div>
+            <div class="row"><button class="btn" id="next" onclick="plotPolyline()">Next</button></div>
+            <div id="launch_details"></div>
+            <div class="row"><button class="btn" id="launch">Launch</button></div>
 
         </div>
       <script>
-           function sameOrigin(url) {
+          function sameOrigin(url) {
     // test that a given url is a same-origin URL
     // url could be relative or scheme relative or absolute
     var host = document.location.host; // host + port
@@ -176,6 +178,8 @@ $.ajax({
         
     }
     function plotPolyline(){
+
+        
         
         var latlngs = [
         {% for a,b in csv %}
@@ -183,11 +187,32 @@ $.ajax({
         [{{a}},{{b}}],
 
         {% endfor %} 
-
+            // [59.842949, 6.34394],
+            // [59.803799,6.55234],
+            // [59.791931,6.78226],
+            // [59.78159,6.99678],
+            // [59.745838,7.1861],
+            // [59.686668,7.41729],
+            // [59.631321,7.63248],
+            // [59.572948,7.85655],
+            // [59.522301,8.04824],
+            // [59.461262,8.27792],
+            // [59.40131,8.50171],
+            // [59.34856,8.6955],
+            // [59.287109,8.91995],
+            // [59.22578,9.14255],
+            // [59.161331,9.37363],
+            // [59.11161,9.55043],
+            // [59.041489,9.79678],
+            // [58.966648,10.05732],
+            // [58.904362,10.271933],
+            // [58.843147,10.480865]
         ];
+        // console.log(latlngs);
         var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
         // zoom the map to the polyline
         map.fitBounds(polyline.getBounds());
+
         //get lat long here
         lat=document.getElementById("lat").textContent;
         long=document.getElementById("long").textContent;
@@ -196,11 +221,11 @@ $.ajax({
         
         // document.getElementById("launch_details").innerHTML = "Angle:"+"<br><br>Time:";
         document.getElementById("launch").style.display = "inline";
-        
     }      
 	
+
       </script>
    </body>
-  
+
 {% endblock %}
 </html>

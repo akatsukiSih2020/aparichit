@@ -11,8 +11,8 @@ import csv
 import pandas as pd
 from collections import defaultdict
 import math
-from . import utils
-from . import lstm
+# from . import utils
+# from . import lstm
 from . import cosys
 
 def home(request):
@@ -164,6 +164,7 @@ def visualize(request):
     if request.method == 'GET':
         #pass data for map
         myfile=request.session['file']
+        print(myfile)
         id=request.user.username
         df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
         mylist = df[['Lat','Long','Alt']].values 
@@ -203,7 +204,8 @@ def launch_attack(request):
         d = json.loads(dat)
 
         myfile=request.session['file']
-        df = pd.read_csv('app/data/'+id + '/' + myfile, index_col = 0)
+        print(myfile)
+        df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
         mylist = df[['Lat','Long']].values 
 
         return render(request,'app/launch.html',{'launch_pads':d,'csv':mylist})
