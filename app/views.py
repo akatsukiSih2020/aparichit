@@ -104,15 +104,23 @@ def cluster(request):
         # print("cluster")
         try:
             myfile=request.session['prediction']
+            print(myfile)
             id=request.user.username
             instance=data.objects.filter(user=id,inputfile_path=myfile)  
             instance=serializers.serialize('json', instance)
             dat = instance.replace("'","\"")
             d = json.loads(dat)
             d = d[0]['fields']
+
+            myfile=request.session['file']
+            df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
+            mylist = df[['Lat','Long','Alt']].values 
+            pro_df = pd.read_csv('app/Data/'+id + '/processed_' + myfile, index_col = 0)
+            pro_mylist = pro_df[['Lat','Long','Alt']].values 
+            
         except:
             d={}
-        return render(request,'app/cluster.html',{'pred':d.get('prediction','')})
+        return render(request,'app/cluster.html',{'pred':d.get('prediction',''),'csv':mylist,'pro_csv':pro_mylist})
     elif request.method == 'POST':
         id=request.user.username
         with open("app/model/model", 'rb') as f:
@@ -159,7 +167,11 @@ def visualize(request):
         id=request.user.username
         df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
         mylist = df[['Lat','Long','Alt']].values 
-        return render(request,'app/visualize.html',{'csv':mylist})
+        pro_df = pd.read_csv('app/Data/'+id + '/processed_' + myfile, index_col = 0)
+        pro_mylist = pro_df[['Lat','Long','Alt']].values 
+        # print(pro_mylist)
+        # print(mylist)
+        return render(request,'app/visualize.html',{'csv':mylist,'pro_csv':pro_mylist})
     elif request.method == 'POST':
         myfile=request.POST.get('file[]')
         if(type(myfile)==list):

@@ -85,12 +85,12 @@
          *************************/
 
         // London
-        var point = {
+        {% comment %} var point = {
           type: "point", // autocasts as new Point()
           x: 59.461262,
           y: 8.27792,
           z: 33750
-        };
+        }; {% endcomment %}
 
         markerSymbol = {
           type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
@@ -116,8 +116,8 @@
         var polylinebeg = {
           type: "polyline", // autocasts as new Polyline()
           paths: [
-            [59.842949, 6.34394, 0],
-            [59.842949, 6.34394, 22125]
+            {% comment %} [59.842949, 6.34394, 0],
+            [59.842949, 6.34394, 22125] {% endcomment %}
           ]
         };
 
@@ -137,7 +137,12 @@
         var polyline1 = {
           type: "polyline", // autocasts as new Polyline()
           paths: [
-            [59.842949, 6.34394, 22125],
+          {% for a,b,c in csv %}
+
+            [{{a}},{{b}},{{c}}],
+
+          {% endfor %} 
+            {% comment %} [59.842949, 6.34394, 22125],
               [59.803799,6.55234,23850],
               [59.791931,6.78226,25525],
               [59.78159,6.99678,26800],
@@ -146,7 +151,7 @@
               [59.631321,7.63248,30400],
               [59.572948,7.85655,31650],
               [59.522301,8.04824,32550],
-              [59.461262,8.27792,33750]
+              [59.461262,8.27792,33750] {% endcomment %}
           ]
         };
 
@@ -166,12 +171,17 @@
         var polyline2 = {
           type: "polyline", // autocasts as new Polyline()
           paths: [
-              [59.461262,8.27792,33750],
+          {% for a,b,c in pro_csv %}
+
+            [{{a}},{{b}},{{c}}],
+
+          {% endfor %} 
+              {% comment %} [59.461262,8.27792,33750],
               [59.40131, 8.50171, 34950],
               [59.34856,8.6955,35700],
               [59.287109,8.91995,36425],
               [59.22578,9.14255,36900],
-              [59.161331,9.37363,37000]
+              [59.161331,9.37363,37000] {% endcomment %}
           ]
         };
 
