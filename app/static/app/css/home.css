@@ -3,7 +3,7 @@ body {
   font-family: sans-serif;
     height: 2600px;
     z-index: 1;
-    background-image: url(../images/desktop_bg.JPG);
+    background-image: url(../images/desktop_bg.jpg);
     background-size: 100% 100%;
     background-position: center;
     background-attachment: fixed;
