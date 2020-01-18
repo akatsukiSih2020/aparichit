@@ -11,8 +11,8 @@ import csv
 import pandas as pd
 from collections import defaultdict
 import math
-from . import utils
-from . import lstm
+# from . import utils
+# from . import lstm
 from . import cosys
 
 def home(request):
@@ -148,7 +148,7 @@ def visualize(request):
         myfile=request.session['file']
         id=request.user.username
         df = pd.read_csv('app/Data/'+id + '/' + myfile, index_col = 0)
-        mylist = df[['Lat','Long']].values 
+        mylist = df[['Lat','Long','Alt']].values 
         return render(request,'app/visualize.html',{'csv':mylist})
     elif request.method == 'POST':
         myfile=request.POST.get('file[]')
