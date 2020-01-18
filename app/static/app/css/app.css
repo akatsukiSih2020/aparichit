@@ -75,7 +75,8 @@ margin-bottom: 5%;
  }
  #map{
   width: 100%;
-   height: 410px
+   height: 410px;
+   margin-bottom: 40px;
  }
  .forms{
 width: 50%;
@@ -94,6 +95,7 @@ padding:2%;
   color: white;
   text-align: center;
   height:5%;
+  z-index: 3;
 }
 .upload-container{
   background-color: rgba(0, 0, 0, 0.86);
