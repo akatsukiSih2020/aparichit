@@ -81,8 +81,19 @@
             map.off('click', addMarker);
           // Add marker to map at click location; add popup window
             var newMarker = new L.marker(e.latlng).addTo(map);
+            newMarker.dragging.enable();
             document.getElementById("latitude").value = e.latlng.lat;
             document.getElementById("longitude").value = e.latlng.lng;
+
+            newMarker.on('dragend', function(event){
+            var marker = event.target;
+            var position = marker.getLatLng();
+            console.log(position);
+            marker.setLatLng([position.lat, position.lng]).bindPopup(position).update();
+            document.getElementById("latitude").value = position.lat;
+            document.getElementById("longitude").value = position.lng;
+            });
+            map.addLayer(marker);
         }
 
 
