@@ -1,0 +1,74 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ArcGIS JavaScript Tutorials: Create a Starter App</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  
+  <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.13/"></script>
+  
+  <script>  
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+    ], function(Map, MapView) {
+
+      var map = new Map({
+        basemap: "topo-vector"
+      });
+      
+      var renderer = {
+  type: "simple", // autocasts as new SimpleRenderer()
+  symbol: {
+    // symbol type required for rendering point geometries
+    type: "point-3d", // autocasts as new PointSymbol3D()
+    symbolLayers: [
+      {
+        // renders points as volumetric objects
+        type: "object", // autocasts as new ObjectSymbol3DLayer()
+        resource: { primitive: "cone" }, // renders points as cones
+        width: 50000
+      }
+    ]
+  },
+  visualVariables: [
+    {
+      type: "color",
+      field: "PRESSURE", // field containing data for atmospheric pressure
+      stops: [{ value: 950, color: "red" }, { value: 1020, color: "blue" }]
+    },
+    {
+      type: "size",
+      field: "WINDSPEED", // field containing data for wind speed
+      stops: [{ value: 20, size: 60000 }, { value: 150, size: 500000 }],
+      axis: "height"
+    },
+    {
+      type: "size",
+      axis: "width-and-depth",
+      useSymbolValue: true // uses the width value defined in the symbol layer (50,000)
+    }
+  ]
+};
+      var view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-118.80500,34.02700],
+        zoom: 13
+      });
+
+    });
+  </script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>

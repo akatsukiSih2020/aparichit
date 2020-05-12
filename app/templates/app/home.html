@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+{% load static %}
+{% include 'app/base1.html' %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{% static '/app/css/home.css' %}" rel="stylesheet" type="text/css" > 
+     <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+   
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    
+</head>
+<body>
+
+
+ 
+<div class="process">
+    <div class="icons">
+<div  id = "launchpad"><a href="{% url 'launchpad' %}"><img class='ic' src='{%static "/app/images/launch_pad_new.PNG" %}' alt = "A"> <h4>Add Launchpad</h4></a></div>
+<div  id = "upload"><a href="{% url 'upload' %}"> <img class='ic' src='{%static "/app/images/upload.PNG" %}' alt = "A"><h4>Upload Data</h4></a></div>
+<div  id = "cluster"><a href=""><img  class='ic' src='{%static "/app/images/detect.PNG" %}' alt = "A"><h4>Detect The Object</h4></a></div>
+<div  id = "predict"><a href=""><img  class='ic' src='{%static "/app/images/predict.PNG" %}' alt = "A"><h4>Project its trajectory</h4></a></div>
+<div  id = "visualize"><a href=""><img class='ic' src='{%static "/app/images/visualize.PNG" %}' alt = "A"><h4>visualize</h4></a></div>
+<div  id = "launch"><a href=""><img  class='ic'src='{%static "/app/images/launch_pad.PNG" %}' alt = "A"><h4>Launch Missile</h4></a></div>    
+</div>
+
+<svg id="roadmap-svg" viewBox="0 0 760 2850">
+  <path class="track" id="track1" stroke-dasharray="10,9" d="M645,164.04
+		c94.488-0.933,147.798,113.116,61,198.96c-112.197,110.964-250.383,70.569-402,133c-110.712,45.587-171.223,130.125-158.981,201.27 C308.019,900.449,535.719,776.242,585,930c18.75,58.5,0.346,121.5-10.028,149.343 C485.436,1315,477,1434,535,1476c47.015,34.045,115.498,12.164,131-45c16-59-23-111-88-112c-84.843-1.306-125.168,89.977-138.98,151
+		c-15.885,70.191,14.48,139.643,57.16,193.202 c35.149,46.862,48.542,101.471-3.998,141.429c-52.421,39.867-115.838,17.305-165.888-13.571
+		c-53.508-33.005-222.409-144.596-354.4-151.492c-65.354-3.416-132.975,15.642-173.593,70.394
+		c-35.042,47.233-43.539,112.665-22.847,167.587c22.548,59.844,76.491,95.053,137.791,106.104
+		c81.652,14.722,130.323-30.101,213.6-42.669c112.637-17,195.638,54.803,221.399,130.602 c15.618,110-32.448,221.008-163.556,202.901c-69.651,50.899-70.48,127.04-64.81,178.391" />
+  <path class="body" id="body1" stroke-dasharray="10,9" d="M645,164.04
+		c94.488-0.933,147.798,113.116,61,198.96c-112.197,110.964-250.383,70.569-402,133c-110.712,45.587-171.223,130.125-158.981,201.27 C308.019,900.449,535.719,776.242,585,930c18.75,58.5,0.346,121.5-10.028,149.343 C485.436,1315,477,1434,535,1476c47.015,34.045,115.498,12.164,131-45c16-59-23-111-88-112c-84.843-1.306-125.168,89.977-138.98,151
+		c-15.885,70.191,14.48,139.643,57.16,193.202 c35.149,46.862,48.542,101.471-3.998,141.429c-52.421,39.867-115.838,17.305-165.888-13.571
+		c-53.508-33.005-222.409-144.596-354.4-151.492c-65.354-3.416-132.975,15.642-173.593,70.394
+		c-35.042,47.233-43.539,112.665-22.847,167.587c22.548,59.844,76.491,95.053,137.791,106.104
+		c81.652,14.722,130.323-30.101,213.6-42.669c112.637-17,195.638,54.803,221.399,130.602 c15.618,110-32.448,221.008-163.556,202.901c-69.651,50.899-70.48,127.04-64.81,178.391" />
+    
+</svg>
+    <!--TODO:link to next page-->
+    <br>
+    <a href="{% url 'launchpad' %}" id="start_process">Get Started</a>
+</div>
+    
+
+<script>
+let roadmapSvg = document.getElementById("roadmap-svg");
+let track = document.getElementById("track1");
+let body = document.getElementById("body1");
+let head = document.getElementById("head");
+
+let totalLength = track.getTotalLength();
+let trackPoints = [];
+let getTrackBounds = () => track.getBoundingClientRect();
+let scaleFactor;
+
+body.style.strokeDasharray = totalLength;
+body.style.strokeDashoffset = totalLength;
+
+function setScaleFactor(){
+  scaleFactor = roadmapSvg.getBoundingClientRect().width / roadmapSvg.viewBox.baseVal.width;
+}   
+setScaleFactor();
+
+function setTrackPoints(){
+  let divisions = 1000;
+  let unitLength = totalLength / divisions;
+    
+         
+  trackPoints = [];
+  for(let i=0; i < divisions; i++){
+    let length = unitLength * i;
+    let {x,y} = track.getPointAtLength(length);
+    trackPoints.push({x: x*scaleFactor, y: y*scaleFactor, length});
+  }
+}
+setTrackPoints();
+
+
+function draw(){
+  let currentLength = getCurrentLength();
+  body.style.strokeDashoffset = totalLength - currentLength;
+  headPos = track.getPointAtLength(currentLength);
+  head.setAttribute("cx", headPos.x);
+  head.setAttribute("cy", headPos.y);
+}
+
+function getCurrentLength(){
+  let centreY = window.innerHeight / 2;
+  let trackBounds = getTrackBounds();
+   
+  let currentY = centreY - trackBounds.y;
+  if(currentY < 0) return 0;
+  
+  // if currentY is greater that track height, that means the user has scrolled pass the track (and the whole svg) in such case the animation should be completed i.e. the head should be at the final position i.e. at totalLength 
+  if(currentY > trackBounds.height) return totalLength;
+  
+  for(let point of trackPoints){
+    if(point.y >= currentY){
+      return point.length;
+    }
+  }
+  
+  // (For safety) Sometimes none of the conditions match bcoz of low precision... Such situation only occurs a point very close to total length... Thus...
+  return totalLength;
+}
+
+document.addEventListener("scroll", draw);
+
+window.addEventListener("resize", () => {
+  setScaleFactor();
+  setTrackPoints();
+  draw();
+});
+</script>
+<footer>
+  <div class="footer"> Made with <i class="fa fa-heart pulse"></i> in V.E.S.I.T</div>
+  </footer>
+ </body>
+</body>
+</html>
+
+<!--path id="p1" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-miterlimit="0" d="M845,14.04
+		c94.488-0.933,147.798,113.116,61,198.96c-112.197,110.964-250.383,70.569-402,133c-110.712,45.587-171.223,130.125-158.981,201.27" style="stroke-dasharray: 977.678px; stroke-dashoffset: 0px; visibility: visible;">
+<path id="p2" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-miterlimit="10" d="M395.214,636.783
+		C508.019,750.449,735.719,626.242,785,780c18.75,58.5,0.346,121.5-10.028,149.343" style="stroke-dasharray: 591.916px; stroke-dashoffset: 591.916px; visibility: visible;"></path>
+<path id="p3" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-miterlimit="10" d="M719,1080.551
+		C685.436,1165,677,1284,735,1326c47.015,34.045,115.498,12.164,131-45c16-59-23-111-88-112c-84.843-1.306-125.168,89.977-138.98,151
+		c-15.885,70.191,14.48,139.643,57.16,193.202" style="stroke-dasharray: 1021.02px; stroke-dashoffset: 754px; visibility: visible;"></path>
+<path id="p4" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-miterlimit="10" d="M784.698,1636.219
+		c35.149,46.862,48.542,101.471-3.998,141.429c-52.421,39.867-115.838,17.305-165.888-13.571
+		c-53.508-33.005-222.409-144.596-354.4-151.492c-65.354-3.416-132.975,15.642-173.593,70.394
+		c-35.042,47.233-43.539,112.665-22.847,167.587c22.548,59.844,76.491,95.053,137.791,106.104
+		c81.652,14.722,130.323-30.101,213.6-42.669c112.637-17,195.638,54.803,221.399,130.602" style="stroke-dasharray: 1780.42px; stroke-dashoffset: 63px; visibility: visible;"></path>
+<path id="p5" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-miterlimit="10" d="M679.961,2196
+		c15.618,110-32.448,221.008-163.556,202.901C437.362,2387.983,326,2354,248,2411c-69.651,50.899-70.48,127.04-64.81,178.391" style="stroke-dasharray: 787.032px; stroke-dashoffset: 626px; visibility: visible;"></path>
+</path-->
