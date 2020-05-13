@@ -1,9 +1,9 @@
 body {
   margin: 0;
   font-family: sans-serif;
-    height: 3500px;
+    height: 2600px;
     z-index: 1;
-    background-image: url(../images/home_bg.JPG);
+    background-image: url(../images/desktop_bg.jpg);
     background-size: 100% 100%;
     background-position: center;
     background-attachment: fixed;
@@ -133,7 +133,35 @@ body {
     width:100%;
       height:100%;
            }
-h4{
+.icons h4{
 
-color: antiquewhite;
+color:white;
+font-weight: bold;
+font-size: 20px;
+background-color:black;
+border-radius: 10px;
+padding:10px 20px;
 }
+.icons #launchpad h4{
+    margin-left: -35px;
+}
+.icons #predict h4{
+    margin-left: -35px;
+}
+.icons #visualize h4{
+    margin-left: -15px;
+}
+.icons  a {
+    background-color: white;
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color:#000;
+    color: white;
+    text-align: center;
+    height:5%;
+    z-index: 3;
+  }

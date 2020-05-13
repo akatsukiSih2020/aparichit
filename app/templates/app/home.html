@@ -20,41 +20,7 @@
 </head>
 <body>
 
-<div class="container"> 
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
 
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-      <div class="item active">
-        <img src='{%static "/app/images/slide1.jpg" %}' height="100%" width="100%">
-      </div>
-
-      <div class="item">
-        <img src='{%static "/app/images/slide2.jpg" %}' height="100%" width="100%">
-      </div>
-    
-      <div class="item">
-       <img src='{%static "/app/images/slide3.jpg" %}' height="100%" width="100%">
-      </div>
-    </div>
-
-    <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-</div>
  
 <div class="process">
     <div class="icons">
@@ -66,7 +32,7 @@
 <div  id = "launch"><a href=""><img  class='ic'src='{%static "/app/images/launch_pad.PNG" %}' alt = "A"><h4>Launch Missile</h4></a></div>    
 </div>
 
-<svg id="roadmap-svg" viewBox="0 0 760 2500">
+<svg id="roadmap-svg" viewBox="0 0 760 2850">
   <path class="track" id="track1" stroke-dasharray="10,9" d="M645,164.04
 		c94.488-0.933,147.798,113.116,61,198.96c-112.197,110.964-250.383,70.569-402,133c-110.712,45.587-171.223,130.125-158.981,201.27 C308.019,900.449,535.719,776.242,585,930c18.75,58.5,0.346,121.5-10.028,149.343 C485.436,1315,477,1434,535,1476c47.015,34.045,115.498,12.164,131-45c16-59-23-111-88-112c-84.843-1.306-125.168,89.977-138.98,151
 		c-15.885,70.191,14.48,139.643,57.16,193.202 c35.149,46.862,48.542,101.471-3.998,141.429c-52.421,39.867-115.838,17.305-165.888-13.571
@@ -83,7 +49,7 @@
 </svg>
     <!--TODO:link to next page-->
     <br>
-    <a href="" id="start_process">Get Started</a>
+    <a href="{% url 'launchpad' %}" id="start_process">Get Started</a>
 </div>
     
 
@@ -157,6 +123,10 @@ window.addEventListener("resize", () => {
   draw();
 });
 </script>
+<footer>
+  <div class="footer"> Made with <i class="fa fa-heart pulse"></i> in V.E.S.I.T</div>
+  </footer>
+ </body>
 </body>
 </html>
 

@@ -9,7 +9,7 @@ def distance(lat1, lon1, lat2, lon2):
 
 def preprocess(fpath):
     df = pd.read_csv(fpath,index_col = 0)
-    if 'ime' not in df.index.name:        
+    if 'ime' not in df.index.name:
         for col in df.columns:
             if 'ime' in col:
                 df.index = df[col]
