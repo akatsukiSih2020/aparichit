@@ -37,11 +37,15 @@
             <div id="launch_details"></div>
             <div style='display:none;' id="lat"></div>
             <div style='display:none;' id="long"></div>
-            <div class="row" style="text-align: center;"><button class="btn btn-dark" id="launch" style="margin: 10px; display: none;">Launch</button></div>
-
+            <div class="row" style="text-align: center;"><button class="btn btn-dark" id="launch" style="margin: 10px; display: none;" onclick="plotmissile()">Launch</button></div>
+            
         </div>
       <script>
-           function sameOrigin(url) {
+      var x1;
+      var y1;
+      var x2;
+      var y2;
+    function sameOrigin(url) {
     // test that a given url is a same-origin URL
     // url could be relative or scheme relative or absolute
     var host = document.location.host; // host + port
@@ -55,61 +59,60 @@
         !(/^(\/\/|http:|https:).*/.test(url));
 }
 
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
             }
         }
+        return cookieValue;
     }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
+    var csrftoken = getCookie('csrftoken');
 
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-
-
-function ajax(lat,long){
-
-    
-$.ajaxSetup({
-    beforeSend: function (xhr, settings) {
-      if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-        // Send the token to same-origin, relative URLs only.
-        // Send the token only if the method warrants CSRF protection
-        // Using the CSRFToken value acquired earlier
-        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-      }
-    //   $('#wait').show();
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
-  });
-$.ajax({
-    url: 'launch',
-    type: 'POST',
-    dataType: "json",
-    data: {'lat':lat,'long':long} ,
-    complete: function () {
-    //   $('#wait').hide();
-    },
-    success: function (data) {
-      console.log(data);
-      document.getElementById("launch_details").innerHTML = "Angle:     "+data.angle+"<br><br>Time:      "+data.time;
-    //   window.location.reload();
-    // window.location.href = "visualize";
-    }
-  });
 
-}
-         // Creating map options
+
+    function ajax(lat,long){
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+            // Send the token to same-origin, relative URLs only.
+            // Send the token only if the method warrants CSRF protection
+            // Using the CSRFToken value acquired earlier
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+        //   $('#wait').show();
+        }
+    });
+    $.ajax({
+        url: 'launch',
+        type: 'POST',
+        dataType: "json",
+        data: {'lat':lat,'long':long} ,
+        complete: function () {
+        //   $('#wait').hide();
+        },
+        success: function (data) {
+        document.getElementById("launch_details").innerHTML = "Angle:     "+data.angle+"<br><br>Time:      "+data.time;
+        x1 = data.lat_i ;
+        y1 = data.long_i ;
+        x2 = data.lat_lpd ;
+        y2 = data.long_lpd ; 
+        }
+    });
+
+    }
+    // Creating map options
          var mapOptions = {
             center: [22.593726, 75.9375],
 			//[51.517327, -0.120005]
@@ -185,10 +188,6 @@ $.ajax({
         {% endfor %} 
 
         ];
-        var x1 = {{ lat_i }};
-        var y1 = {{ long_i }};
-        var x2 = {{ lat_pd }};
-        var y2 = {{ long_pd }};
 
         var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
         // zoom the map to the polyline
@@ -202,7 +201,25 @@ $.ajax({
         // document.getElementById("launch_details").innerHTML = "Angle:"+"<br><br>Time:";
         document.getElementById("launch").style.display = "inline";
         
-    }      
+    }
+    function plotmissile(){
+        
+        var latlngs = [[x1,y1],[x2,y2]];
+        console.log(latlngs);
+        var polyline = L.polyline(latlngs, {color:'blue'}).addTo(map);
+        map.fitBounds(polyline.getBounds());
+        
+        var crossMark = L.icon({
+        iconUrl: '{%static "/app/images/crossMark.png" %}',
+
+        iconSize:     [38, 38], // size of the icon
+        iconAnchor:   [22, 37], // point of the icon which will correspond to marker's location
+
+        
+});
+L.marker([x1, y1], {icon: crossMark}).addTo(map);
+
+    }
 	
       </script>
    </body>
